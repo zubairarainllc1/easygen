@@ -93,6 +93,42 @@ function ToolCard({ tool }: { tool: typeof tools[0] }) {
     )
 }
 
+const TypingAnimation = () => {
+    const [wordIndex, setWordIndex] = useState(0);
+    const [text, setText] = useState('');
+    const [isDeleting, setIsDeleting] = useState(false);
+    const typingSpeed = 150;
+    const deletingSpeed = 100;
+    const delay = 2000;
+    const words = ["CVs", "Invoices", "Card", "Quotation", "Contract", "Qr code"];
+
+    useEffect(() => {
+        const handleTyping = () => {
+            const currentWord = words[wordIndex];
+            const updatedText = isDeleting
+                ? currentWord.substring(0, text.length - 1)
+                : currentWord.substring(0, text.length + 1);
+
+            setText(updatedText);
+
+            if (!isDeleting && updatedText === currentWord) {
+                setTimeout(() => setIsDeleting(true), delay);
+            } else if (isDeleting && updatedText === '') {
+                setIsDeleting(false);
+                setWordIndex((prev) => (prev + 1) % words.length);
+            }
+        };
+
+        const timeout = setTimeout(handleTyping, isDeleting ? deletingSpeed : typingSpeed);
+        return () => clearTimeout(timeout);
+    }, [text, isDeleting, wordIndex]);
+
+    return (
+      <span className="typing-cursor text-primary pr-1">{text}</span>
+    );
+}
+
+
 export default function Home() {
     const [filter, setFilter] = useState('all');
     const tabsRef = useRef<HTMLDivElement>(null);
@@ -156,7 +192,7 @@ export default function Home() {
             <div className="flex flex-col items-center space-y-6 text-center">
                 <div className="space-y-4">
                   <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl font-sans p-4 text-gray-900">
-                    Create Professional Documents in Seconds
+                    Create Professional <TypingAnimation />
                   </h1>
                   <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
                     Our powerful tools help you generate beautiful invoices, CVs, and more. Focus on your work, we'll handle the paperwork.

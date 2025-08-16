@@ -76,13 +76,11 @@
 @layer utilities {
   @keyframes gradient-animation {
     0% { background-position: 0% 50%; }
-    25% { background-position: 100% 50%; }
-    50% { background-position: 0% 50%; }
-    75% { background-position: 100% 50%; }
+    50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
   }
   .animate-gradient {
-    background: linear-gradient(-45deg, #fde047, #f97316, #ec4899, #a855f7);
+    background: linear-gradient(-45deg, hsl(51, 98%, 50%), hsl(25, 95%, 53%), hsl(330, 81%, 54%), hsl(262, 84%, 59%));
     background-size: 400% 400%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -94,9 +92,17 @@
     transition: all 0.3s ease-in-out;
   }
   .btn-gradient-border:hover {
-    background: linear-gradient(-45deg, #fde047, #f97316, #ec4899, #a855f7);
+    background: linear-gradient(-45deg, hsl(51, 98%, 50%), hsl(25, 95%, 53%), hsl(330, 81%, 54%), hsl(262, 84%, 59%));
     background-size: 400% 400%;
     animation: gradient-animation 2s ease-in-out infinite;
     filter: brightness(1.2);
+  }
+  @keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: hsl(var(--primary)); }
+  }
+  .typing-cursor {
+    border-right: .15em solid hsl(var(--primary));
+    animation: blink-caret .75s step-end infinite;
   }
 }
