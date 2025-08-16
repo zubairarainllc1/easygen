@@ -4,7 +4,7 @@
 import Link from "next/link";
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Logo } from "@/components/logo";
 import { ArrowRight, FileSignature, FileText, MoveRight, FileJson, Contact, FileCheck2, QrCode, Menu } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -74,11 +74,19 @@ const tools = [
 function ToolCard({ tool }: { tool: typeof tools[0] }) {
     return (
         <Link href={tool.href}>
-            <Card className="h-full hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group flex flex-col items-center justify-center text-center p-6">
-               <div className="bg-primary/10 p-3 rounded-full inline-block mb-3">
-                   {React.cloneElement(tool.icon, { className: "h-6 w-6 text-primary" })}
-                </div>
-                <CardTitle className="text-lg">{tool.title}</CardTitle>
+            <Card className="h-full hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group flex flex-col">
+                <CardHeader>
+                    {tool.icon}
+                    <CardTitle>{tool.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="flex-grow">
+                    <CardDescription>{tool.description}</CardDescription>
+                </CardContent>
+                <CardFooter>
+                    <Button variant="link" className="p-0 group-hover:text-primary">
+                        {tool.cta || 'Get Started'} <ArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
+                    </Button>
+                </CardFooter>
             </Card>
         </Link>
     )
@@ -186,7 +194,7 @@ export default function Home() {
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="right">
-                  <SheetHeader>
+                   <SheetHeader>
                     <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                   </SheetHeader>
                   <div className="flex flex-col gap-4 p-4">
@@ -218,7 +226,7 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="space-y-4 pt-4">
-                     <Link href="#tools">
+                    <Link href="#tools">
                        <Button size="lg">Explore Tools</Button>
                     </Link>
                 </div>
@@ -246,7 +254,7 @@ export default function Home() {
                     </TabsList>
                 </Tabs>
             </div>
-            <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 py-12 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+            <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 py-12 sm:grid-cols-2 lg:grid-cols-4">
               {filteredTools.map((tool) => <ToolCard key={tool.href} tool={tool} />)}
             </div>
           </div>
