@@ -124,7 +124,7 @@ const TypingAnimation = () => {
     }, [text, isDeleting, wordIndex]);
 
     return (
-      <span className="typing-cursor text-primary pr-1">{text}</span>
+      <span className="typing-cursor pr-1">{text}</span>
     );
 }
 
@@ -199,10 +199,8 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="space-y-4 pt-4">
-                     <Link href="#tools" className="inline-block">
-                       <div className="btn-gradient-border rounded-lg">
-                           <Button size="lg" className="w-full">Explore Tools</Button>
-                       </div>
+                     <Link href="#tools">
+                       <Button size="lg">Explore Tools</Button>
                     </Link>
                 </div>
             </div>
