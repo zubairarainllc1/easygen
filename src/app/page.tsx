@@ -66,22 +66,24 @@ export default function Home() {
                   </CardContent>
                 </Card>
               </Link>
-              <Card className="h-full bg-muted/40 cursor-not-allowed opacity-60">
-                <CardHeader>
-                  <div className="bg-primary/10 p-3 rounded-md inline-block mb-4">
-                     <FileSignature className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle>CV Maker</CardTitle>
-                  <CardDescription>
-                    Build a standout CV with our easy-to-use builder. Choose from professional templates and highlight your skills. (Coming Soon)
-                  </CardDescription>
-                </CardHeader>
-                 <CardContent>
-                    <Button variant="link" className="p-0 h-auto" disabled>
-                        Build Your CV <MoveRight className="ml-2" />
-                    </Button>
-                  </CardContent>
-              </Card>
+              <Link href="/cv">
+                <Card className="h-full hover:shadow-xl transition-shadow duration-300">
+                  <CardHeader>
+                    <div className="bg-primary/10 p-3 rounded-md inline-block mb-4">
+                       <FileSignature className="h-8 w-8 text-primary" />
+                    </div>
+                    <CardTitle>CV Maker</CardTitle>
+                    <CardDescription>
+                      Build a standout CV with our easy-to-use builder. Choose from professional templates and highlight your skills.
+                    </CardDescription>
+                  </CardHeader>
+                   <CardContent>
+                      <Button variant="link" className="p-0 h-auto text-primary">
+                          Build Your CV <MoveRight className="ml-2" />
+                      </Button>
+                    </CardContent>
+                </Card>
+              </Link>
             </div>
           </div>
         </section>

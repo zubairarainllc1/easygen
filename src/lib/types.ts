@@ -15,3 +15,30 @@ export interface Invoice {
   taxRate: number;
   notes: string;
 }
+
+export interface CvData {
+  personalInfo: {
+    name: string;
+    email: string;
+    phone: string;
+    address: string;
+    website: string;
+  };
+  summary: string;
+  experience: {
+    id: string;
+    company: string;
+    title: string;
+    startDate: string;
+    endDate: string;
+    description: string;
+  }[];
+  education: {
+    id: string;
+    school: string;
+    degree: string;
+    startDate: string;
+    endDate: string;
+  }[];
+  skills: string[];
+}
