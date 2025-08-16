@@ -188,6 +188,45 @@ function ToolCard({ tool }: { tool: typeof tools[0] }) {
     )
 }
 
+const TypingAnimation = ({ words }: { words: string[] }) => {
+  const [wordIndex, setWordIndex] = useState(0);
+  const [text, setText] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const typingSpeed = 150;
+  const deletingSpeed = 75;
+  const delay = 1500;
+
+  useEffect(() => {
+    const handleTyping = () => {
+      const currentWord = words[wordIndex];
+      const updatedText = isDeleting
+        ? currentWord.substring(0, text.length - 1)
+        : currentWord.substring(0, text.length + 1);
+
+      setText(updatedText);
+
+      if (!isDeleting && updatedText === currentWord) {
+        setTimeout(() => setIsDeleting(true), delay);
+      } else if (isDeleting && updatedText === '') {
+        setIsDeleting(false);
+        setWordIndex((prev) => (prev + 1) % words.length);
+      }
+    };
+
+    const timer = setTimeout(handleTyping, isDeleting ? deletingSpeed : typingSpeed);
+
+    return () => clearTimeout(timer);
+  }, [wordIndex, text, isDeleting, words]);
+
+  return (
+    <span className="text-primary relative">
+        {text}
+        <span className="animate-pulse">|</span>
+    </span>
+    );
+};
+
+
 export default function Home() {
     const [filter, setFilter] = useState('all');
     const tabsRef = useRef<HTMLDivElement>(null);
@@ -279,7 +318,7 @@ export default function Home() {
             <div className="flex flex-col items-center space-y-6 text-center">
                 <div className="space-y-4">
                   <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl font-sans text-gray-900">
-                    Create Professional <span className="text-primary">Documents</span>
+                    Create Professional <TypingAnimation words={['Resumes', 'Invoices', 'Quotations', 'Contracts']} />
                   </h1>
                   <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl py-6">
                     Our powerful tools help you generate beautiful invoices, CVs, and more. Focus on your work, we'll handle the paperwork.
