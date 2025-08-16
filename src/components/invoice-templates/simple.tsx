@@ -8,10 +8,10 @@ import { format } from 'date-fns';
 
 const primaryColor = 'hsl(var(--primary-invoice))';
 
-const formatCurrency = (amount: number) => {
+const formatCurrency = (amount: number, currency: string) => {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'USD',
+    currency: currency,
   }).format(amount);
 };
 
@@ -43,7 +43,7 @@ export default function SimpleInvoice({ invoice, isQuotation = false, validUntil
           <p>{invoice.companyEmail || 'your-email@company.com'}</p>
         </div>
         <div className="text-right">
-          <p><strong>{docNumberLabel}</strong> {invoice.invoiceNumber}</p>
+          <p><strong>{docNumberLabel}</strong> {isQuotation ? invoice.quotationNumber : invoice.invoiceNumber}</p>
           <p><strong>Date:</strong> {format(invoice.date, 'PPP')}</p>
           {isQuotation && validUntil && <p><strong>Valid Until:</strong> {format(validUntil, 'PPP')}</p>}
         </div>
@@ -72,8 +72,8 @@ export default function SimpleInvoice({ invoice, isQuotation = false, validUntil
                 <TableRow key={item.id}>
                   <TableCell className="font-medium">{item.name}</TableCell>
                   <TableCell className="text-center">{item.quantity}</TableCell>
-                  <TableCell className="text-right">{formatCurrency(item.price)}</TableCell>
-                  <TableCell className="text-right font-medium">{formatCurrency(item.quantity * item.price)}</TableCell>
+                  <TableCell className="text-right">{formatCurrency(item.price, invoice.currency)}</TableCell>
+                  <TableCell className="text-right font-medium">{formatCurrency(item.quantity * item.price, invoice.currency)}</TableCell>
                 </TableRow>
               ))
             ) : (
@@ -91,16 +91,16 @@ export default function SimpleInvoice({ invoice, isQuotation = false, validUntil
         <div className="w-full max-w-xs">
           <div className="flex justify-between py-1">
             <span className="text-muted-foreground">Subtotal</span>
-            <span>{formatCurrency(subtotal)}</span>
+            <span>{formatCurrency(subtotal, invoice.currency)}</span>
           </div>
           <div className="flex justify-between py-1">
             <span className="text-muted-foreground">Tax ({invoice.taxRate}%)</span>
-            <span>{formatCurrency(taxAmount)}</span>
+            <span>{formatCurrency(taxAmount, invoice.currency)}</span>
           </div>
           <Separator className="my-2" />
           <div className="flex justify-between py-1 font-bold text-lg" style={{color: primaryColor}}>
             <span>Total</span>
-            <span>{formatCurrency(total)}</span>
+            <span>{formatCurrency(total, invoice.currency)}</span>
           </div>
         </div>
       </div>

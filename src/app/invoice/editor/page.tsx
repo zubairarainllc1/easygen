@@ -48,6 +48,7 @@ function InvoiceEditorPageContent() {
     companyName: "Your Company Inc.",
     companyAddress: "123 Business Rd, Suite 100\nBusiness City, 12345",
     companyEmail: "your-email@company.com",
+    currency: "USD",
   });
 
   useEffect(() => {

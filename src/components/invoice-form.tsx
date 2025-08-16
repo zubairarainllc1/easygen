@@ -15,6 +15,37 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Textarea } from '@/components/ui/textarea';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+
+const currencies = [
+  { value: 'USD', label: 'USD - US Dollar' },
+  { value: 'EUR', label: 'EUR - Euro' },
+  { value: 'GBP', label: 'GBP - British Pound' },
+  { value: 'JPY', label: 'JPY - Japanese Yen' },
+  { value: 'AUD', label: 'AUD - Australian Dollar' },
+  { value: 'CAD', label: 'CAD - Canadian Dollar' },
+  { value: 'CHF', label: 'CHF - Swiss Franc' },
+  { value: 'CNY', label: 'CNY - Chinese Yuan' },
+  { value: 'INR', label: 'INR - Indian Rupee' },
+  { value: 'PKR', label: 'PKR - Pakistani Rupee' },
+  { value: 'AED', label: 'AED - UAE Dirham' },
+];
+
+// Approximate exchange rates relative to USD for demonstration
+const exchangeRates: { [key: string]: number } = {
+  USD: 1,
+  EUR: 0.93,
+  GBP: 0.79,
+  JPY: 157,
+  AUD: 1.5,
+  CAD: 1.37,
+  CHF: 0.9,
+  CNY: 7.25,
+  INR: 83.5,
+  PKR: 278.5,
+  AED: 3.67,
+};
+
 
 interface InvoiceFormProps {
   invoice: Invoice;
@@ -36,6 +67,18 @@ export default function InvoiceForm({ invoice, setInvoice, withCompanyLogo }: In
       return item;
     });
     setInvoice({ ...invoice, items: newItems });
+  };
+
+  const handleCurrencyChange = (newCurrency: string) => {
+    const oldCurrency = invoice.currency;
+    const conversionRate = exchangeRates[newCurrency] / exchangeRates[oldCurrency];
+    
+    const newItems = invoice.items.map(item => ({
+      ...item,
+      price: item.price * conversionRate,
+    }));
+    
+    setInvoice({ ...invoice, currency: newCurrency, items: newItems });
   };
 
   const addItem = () => {
@@ -99,6 +142,19 @@ export default function InvoiceForm({ invoice, setInvoice, withCompanyLogo }: In
                             </PopoverContent>
                             </Popover>
                         </div>
+                    </div>
+                     <div className="space-y-2">
+                        <Label htmlFor="currency">Currency</Label>
+                        <Select value={invoice.currency} onValueChange={handleCurrencyChange}>
+                            <SelectTrigger id="currency">
+                                <SelectValue placeholder="Select currency" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {currencies.map((c) => (
+                                    <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
                     </div>
                 </AccordionContent>
             </AccordionItem>

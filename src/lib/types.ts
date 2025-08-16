@@ -20,6 +20,7 @@ export interface Invoice {
   companyName: string;
   companyEmail: string;
   companyAddress: string;
+  currency: string;
 }
 
 export interface Quotation extends Invoice {

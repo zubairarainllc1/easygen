@@ -29,6 +29,8 @@ export default function QuotationPreview({ quotation, template, primaryColor }: 
   const invoiceData = {
     ...quotation,
     invoiceNumber: quotation.quotationNumber,
+    // Quotations don't need currency conversion in the same way, but we pass it for consistency
+    currency: quotation.currency || 'USD',
   }
 
   return (

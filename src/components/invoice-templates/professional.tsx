@@ -8,10 +8,10 @@ import { format } from 'date-fns';
 
 const primaryColor = 'hsl(var(--primary-invoice))';
 
-const formatCurrency = (amount: number) => {
+const formatCurrency = (amount: number, currency: string) => {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'USD',
+    currency: currency,
   }).format(amount);
 };
 
@@ -39,7 +39,7 @@ export default function ProfessionalInvoice({ invoice, isQuotation = false, vali
         </div>
         <div className="text-right flex-shrink-0">
           <h2 className="text-3xl font-bold uppercase" style={{ color: primaryColor }}>{docType}</h2>
-          <p className="text-muted-foreground">#{invoice.invoiceNumber}</p>
+          <p className="text-muted-foreground">#{isQuotation ? invoice.quotationNumber : invoice.invoiceNumber}</p>
           <p className="text-muted-foreground mt-1">Date: {format(invoice.date, 'PPP')}</p>
           {isQuotation && validUntil && <p className="text-muted-foreground">Valid Until: {format(validUntil, 'PPP')}</p>}
         </div>
@@ -78,8 +78,8 @@ export default function ProfessionalInvoice({ invoice, isQuotation = false, vali
                 <TableRow key={item.id} className="odd:bg-muted/30">
                   <TableCell className="font-medium">{item.name}</TableCell>
                   <TableCell className="text-center">{item.quantity}</TableCell>
-                  <TableCell className="text-right">{formatCurrency(item.price)}</TableCell>
-                  <TableCell className="text-right font-medium">{formatCurrency(item.quantity * item.price)}</TableCell>
+                  <TableCell className="text-right">{formatCurrency(item.price, invoice.currency)}</TableCell>
+                  <TableCell className="text-right font-medium">{formatCurrency(item.quantity * item.price, invoice.currency)}</TableCell>
                 </TableRow>
               ))
             ) : (
@@ -97,16 +97,16 @@ export default function ProfessionalInvoice({ invoice, isQuotation = false, vali
         <div className="w-full max-w-sm">
           <div className="flex justify-between py-2">
             <span className="text-muted-foreground">Subtotal</span>
-            <span className="font-medium">{formatCurrency(subtotal)}</span>
+            <span className="font-medium">{formatCurrency(subtotal, invoice.currency)}</span>
           </div>
           <div className="flex justify-between py-2">
             <span className="text-muted-foreground">Tax ({invoice.taxRate}%)</span>
-            <span className="font-medium">{formatCurrency(taxAmount)}</span>
+            <span className="font-medium">{formatCurrency(taxAmount, invoice.currency)}</span>
           </div>
           <Separator className="my-2" />
           <div className="flex justify-between py-2 text-lg font-bold rounded-lg" style={{backgroundColor: primaryColor, color: 'white', padding: '8px 16px'}}>
             <span>Total</span>
-            <span>{formatCurrency(total)}</span>
+            <span>{formatCurrency(total, invoice.currency)}</span>
           </div>
         </div>
       </div>
