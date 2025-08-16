@@ -11,9 +11,10 @@ import { Textarea } from '@/components/ui/textarea';
 interface BusinessCardFormProps {
   cardData: BusinessCardData;
   setCardData: (data: BusinessCardData) => void;
+  withLogo: boolean;
 }
 
-export default function BusinessCardForm({ cardData, setCardData }: BusinessCardFormProps) {
+export default function BusinessCardForm({ cardData, setCardData, withLogo }: BusinessCardFormProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setCardData({
@@ -73,13 +74,15 @@ export default function BusinessCardForm({ cardData, setCardData }: BusinessCard
           <Label htmlFor="address">Address</Label>
           <Textarea id="address" name="address" value={cardData.address} onChange={handleChange} rows={3}/>
         </div>
-        <div className="space-y-2">
-            <Label htmlFor="logoUrl">Company Logo</Label>
-            <div className="flex items-center gap-4">
-                {cardData.logoUrl && <img src={cardData.logoUrl} alt="Logo" className="w-24 h-auto bg-gray-200 p-1 rounded"/>}
-                <Input id="logoUrl" name="logoUrl" type="file" accept="image/*" onChange={handleLogoChange} className="w-auto"/>
+        {withLogo && (
+            <div className="space-y-2">
+                <Label htmlFor="logoUrl">Company Logo</Label>
+                <div className="flex items-center gap-4">
+                    {cardData.logoUrl && <img src={cardData.logoUrl} alt="Logo" className="w-24 h-auto bg-gray-200 p-1 rounded"/>}
+                    <Input id="logoUrl" name="logoUrl" type="file" accept="image/*" onChange={handleLogoChange} className="w-auto"/>
+                </div>
             </div>
-        </div>
+        )}
         <div className="space-y-2">
             <Label htmlFor="accentColor">Accent Color</Label>
             <Input id="accentColor" name="accentColor" type="color" value={cardData.accentColor} onChange={handleChange} className="w-24 h-10 p-1"/>

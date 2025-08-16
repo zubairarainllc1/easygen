@@ -1,99 +1,111 @@
 
 "use client";
 
-import { useState, useRef } from "react";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
-import type { BusinessCardData } from "@/lib/types";
-import BusinessCardForm from "@/components/business-card-form";
-import BusinessCardPreview from "@/components/business-card-preview";
-import { Card } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
-import { Logo } from "@/components/logo";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Download, FlipHorizontal } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { Logo } from "@/components/logo";
 import { cn } from "@/lib/utils";
+import { ArrowRight, CheckCircle2, Image as ImageIcon, ImageOff } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 
-export default function BusinessCardPage() {
-  const { toast } = useToast();
-  const frontRef = useRef<HTMLDivElement>(null);
-  const backRef = useRef<HTMLDivElement>(null);
-  const [isBack, setIsBack] = useState(false);
+const templates = [
+  { id: "sleek", name: "Sleek" },
+  { id: "minimal", name: "Minimal" },
+  { id: "bold", name: "Bold" },
+];
 
-  const [cardData, setCardData] = useState<BusinessCardData>({
-    name: "John Doe",
-    title: "CEO & Founder",
-    companyName: "Creative Solutions",
-    email: "john.doe@creativesolutions.com",
-    phone: "+1 234 567 890",
-    website: "www.creativesolutions.com",
-    address: "123 Design Lane, Art City, 54321",
-    logoUrl: "https://placehold.co/150x50.png",
-    accentColor: "#007BFF",
-  });
+const colors = [
+  { name: "Blue", value: "#3b82f6" },
+  { name: "Green", value: "#22c55e" },
+  { name: "Orange", value: "#f97316" },
+  { name: "Purple", value: "#8b5cf6" },
+  { name: "Teal", value: "#14b8a6" },
+  { name: "Red", value: "#ef4444" },
+  { name: "Indigo", value: "#6366f1" },
+  { name: "Pink", value: "#ec4899" },
+  { name: "Gray", value: "#6b7280" },
+  { name: "Black", value: "#1f2937" },
+];
 
-  const generatePdf = async () => {
-    if (frontRef.current && backRef.current) {
-        toast({ title: "Generating PDF...", description: "Please wait a moment." });
-        try {
-            const pdf = new jsPDF({
-                orientation: 'landscape',
-                unit: 'px',
-                format: [frontRef.current.offsetWidth, frontRef.current.offsetHeight]
-            });
+export default function BusinessCardTemplatePage() {
+  const router = useRouter();
+  const [selectedTemplate, setSelectedTemplate] = useState(templates[0].id);
+  const [selectedColor, setSelectedColor] = useState(colors[0].value);
+  const [withLogo, setWithLogo] = useState(true);
 
-            // Front
-            const canvasFront = await html2canvas(frontRef.current, { scale: 3, useCORS: true });
-            const imgDataFront = canvasFront.toDataURL("image/png");
-            pdf.addImage(imgDataFront, "PNG", 0, 0, frontRef.current.offsetWidth, frontRef.current.offsetHeight);
-
-            // Back
-            pdf.addPage();
-            const canvasBack = await html2canvas(backRef.current, { scale: 3, useCORS: true });
-            const imgDataBack = canvasBack.toDataURL("image/png");
-            pdf.addImage(imgDataBack, "PNG", 0, 0, backRef.current.offsetWidth, backRef.current.offsetHeight);
-
-            pdf.save(`${cardData.name.replace(/\s/g, '_')}_BusinessCard.pdf`);
-            toast({ title: "Success!", description: "Your business card has been downloaded." });
-
-        } catch (err) {
-            toast({ variant: "destructive", title: "Error", description: "Failed to generate PDF." });
-            console.error(err);
-        }
-    }
+  const handleNext = () => {
+    const params = new URLSearchParams();
+    params.set("template", selectedTemplate);
+    params.set("color", selectedColor);
+    params.set("withLogo", String(withLogo));
+    router.push(`/business-card/editor?${params.toString()}`);
   };
 
-
   return (
-    <main className="min-h-screen bg-muted/50">
+    <div className="min-h-screen bg-muted/50">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container h-14 flex items-center">
-          <Logo />
+            <Logo />
         </div>
       </header>
-      <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-        <div className="grid lg:grid-cols-2 gap-8">
-          <div>
-            <BusinessCardForm cardData={cardData} setCardData={setCardData} />
-          </div>
-          <div className="space-y-4 sticky top-24 h-fit">
-            <h2 className="text-xl font-semibold text-center">Preview</h2>
-            <div className="flex justify-center">
-                 <BusinessCardPreview cardData={cardData} frontRef={frontRef} backRef={backRef} isBack={isBack} />
-            </div>
-            <div className="p-4 bg-muted/30 border-t flex justify-center gap-2 rounded-b-lg">
-                <Button variant="outline" onClick={() => setIsBack(!isBack)}>
-                    <FlipHorizontal />
-                    {isBack ? "Show Front" : "Show Back"}
-                </Button>
-                <Button onClick={generatePdf}>
-                    <Download />
-                    Download
-                </Button>
-            </div>
-          </div>
+       <div className="container mx-auto p-4 sm:p-6 lg:p-8">
+        <div className="flex flex-col items-center text-center space-y-4 mb-12">
+            <h1 className="text-4xl font-bold tracking-tight font-sans">Design Your Business Card</h1>
+            <p className="text-lg text-muted-foreground max-w-2xl">
+                Choose a style and color to create a professional business card that stands out.
+            </p>
         </div>
-      </div>
-    </main>
+
+        <div className="mb-12">
+            <h2 className="text-2xl font-semibold text-center mb-6 font-sans">1. Select a Template</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {templates.map((template) => (
+                    <div key={template.id} onClick={() => setSelectedTemplate(template.id)} className="cursor-pointer group">
+                        <Card className={cn("overflow-hidden transition-all h-48 flex items-center justify-center text-center p-4", selectedTemplate === template.id ? 'ring-2 ring-primary ring-offset-2' : 'hover:shadow-lg')}>
+                            <div className="flex flex-col items-center gap-2">
+                                <p className="font-medium text-lg capitalize">{template.name}</p>
+                                {selectedTemplate === template.id && <CheckCircle2 className="text-primary h-5 w-5"/>}
+                            </div>
+                        </Card>
+                    </div>
+                ))}
+            </div>
+        </div>
+
+        <div className="mb-12">
+            <h2 className="text-2xl font-semibold text-center mb-6 font-sans">2. Include Logo?</h2>
+            <div className="flex justify-center items-center gap-4">
+                <ImageOff className={cn("h-8 w-8", !withLogo ? "text-primary" : "text-muted-foreground")} />
+                <Switch
+                    id="logo-switch"
+                    checked={withLogo}
+                    onCheckedChange={setWithLogo}
+                />
+                <ImageIcon className={cn("h-8 w-8", withLogo ? "text-primary" : "text-muted-foreground")} />
+            </div>
+             <p className="text-center text-muted-foreground mt-2">{withLogo ? "Card will include a logo." : "Card will not include a logo."}</p>
+        </div>
+
+
+        <div className="mb-12">
+            <h2 className="text-2xl font-semibold text-center mb-6 font-sans">3. Pick an Accent Color</h2>
+            <div className="flex justify-center flex-wrap gap-4">
+                {colors.map((color) => (
+                    <button key={color.name} onClick={() => setSelectedColor(color.value)} className={cn("h-12 w-12 rounded-full border-2 transition-all flex items-center justify-center", selectedColor === color.value ? 'border-primary scale-110 ring-2 ring-offset-2 ring-primary' : 'border-transparent hover:scale-105')} style={{ backgroundColor: color.value }}>
+                       {selectedColor === color.value && <CheckCircle2 className="h-6 w-6 text-white"/>}
+                    </button>
+                ))}
+            </div>
+        </div>
+        
+        <div className="text-center">
+            <Button size="lg" onClick={handleNext}>
+                Next <ArrowRight className="ml-2" />
+            </Button>
+        </div>
+       </div>
+    </div>
   );
 }
