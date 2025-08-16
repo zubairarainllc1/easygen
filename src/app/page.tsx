@@ -188,42 +188,6 @@ function ToolCard({ tool }: { tool: typeof tools[0] }) {
     )
 }
 
-const TypingAnimation = () => {
-    const [wordIndex, setWordIndex] = useState(0);
-    const [text, setText] = useState('');
-    const [isDeleting, setIsDeleting] = useState(false);
-    const typingSpeed = 150;
-    const deletingSpeed = 100;
-    const delay = 2000;
-    const words = ["CVs", "Invoices", "Card", "Quotation", "Contract", "Qr code"];
-
-    useEffect(() => {
-        const handleTyping = () => {
-            const currentWord = words[wordIndex];
-            const updatedText = isDeleting
-                ? currentWord.substring(0, text.length - 1)
-                : currentWord.substring(0, text.length + 1);
-
-            setText(updatedText);
-
-            if (!isDeleting && updatedText === currentWord) {
-                setTimeout(() => setIsDeleting(true), delay);
-            } else if (isDeleting && updatedText === '') {
-                setIsDeleting(false);
-                setWordIndex((prev) => (prev + 1) % words.length);
-            }
-        };
-
-        const timeout = setTimeout(handleTyping, isDeleting ? deletingSpeed : typingSpeed);
-        return () => clearTimeout(timeout);
-    }, [text, isDeleting, wordIndex]);
-
-    return (
-      <span className="typing-cursor pr-1">{text}</span>
-    );
-}
-
-
 export default function Home() {
     const [filter, setFilter] = useState('all');
     const tabsRef = useRef<HTMLDivElement>(null);
@@ -315,7 +279,7 @@ export default function Home() {
             <div className="flex flex-col items-center space-y-6 text-center">
                 <div className="space-y-4">
                   <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl font-sans text-gray-900">
-                    Create Professional <span className="text-primary block sm:inline"><TypingAnimation /></span>
+                    Create Professional <span className="text-primary">Documents</span>
                   </h1>
                   <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl py-6">
                     Our powerful tools help you generate beautiful invoices, CVs, and more. Focus on your work, we'll handle the paperwork.
@@ -368,7 +332,7 @@ export default function Home() {
                     {howToSteps.map((step, index) => (
                         <div key={index} className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
                             <div className={cn("space-y-4 text-center md:text-left", index % 2 === 1 && "md:order-last")}>
-                                <h3 className="text-2xl font-bold">{step.title}</h3>
+                                <h3 className="text-2xl font-bold text-gray-900">{step.title}</h3>
                                 <p className="text-muted-foreground leading-relaxed">{step.description}</p>
                                 <ul className="space-y-2 text-left pt-2">
                                   {step.steps.map((s, i) => (
@@ -432,3 +396,5 @@ const ListItem = React.forwardRef<
   )
 })
 ListItem.displayName = "ListItem"
+
+    
