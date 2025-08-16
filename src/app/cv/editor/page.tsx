@@ -28,14 +28,14 @@ function CvEditorPageContent() {
   const pdfRef = useRef<HTMLDivElement>(null);
   const [isPreviewVisible, setIsPreviewVisible] = useState(true);
   
-  const [template, setTemplate] = useState<"classic" | "modern">("classic");
+  const [template, setTemplate] = useState<"classic" | "modern" | "minimalist" | "creative" | "professional">("classic");
   const [primaryColor, setPrimaryColor] = useState("228 65% 33%"); // Default blue
 
   useEffect(() => {
     const templateParam = searchParams.get('template');
     const colorParam = searchParams.get('color');
 
-    if (templateParam === 'classic' || templateParam === 'modern') {
+    if (templateParam === 'classic' || templateParam === 'modern' || templateParam === 'minimalist' || templateParam === 'creative' || templateParam === 'professional') {
       setTemplate(templateParam);
     }
     if (colorParam) {
@@ -179,6 +179,9 @@ function CvEditorPageContent() {
                     <DropdownMenuContent>
                         <DropdownMenuItem onSelect={() => setTemplate("classic")}>Classic</DropdownMenuItem>
                         <DropdownMenuItem onSelect={() => setTemplate("modern")}>Modern</DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => setTemplate("minimalist")}>Minimalist</DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => setTemplate("creative")}>Creative</DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => setTemplate("professional")}>Professional</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
 

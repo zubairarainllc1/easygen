@@ -13,6 +13,9 @@ import { ArrowRight, CheckCircle2 } from "lucide-react";
 const templates = [
   { id: "classic", name: "Classic", image: "https://placehold.co/400x565.png", hint: "professional resume" },
   { id: "modern", name: "Modern", image: "https://placehold.co/400x565.png", hint: "creative resume" },
+  { id: "minimalist", name: "Minimalist", image: "https://placehold.co/400x565.png", hint: "simple resume" },
+  { id: "creative", name: "Creative", image: "https://placehold.co/400x565.png", hint: "artistic resume" },
+  { id: "professional", name: "Professional", image: "https://placehold.co/400x565.png", hint: "corporate resume" },
 ];
 
 const colors = [
@@ -21,6 +24,11 @@ const colors = [
   { name: "Orange", value: "25 95% 53%" },
   { name: "Purple", value: "262 84% 59%" },
   { name: "Teal", value: "173 80% 40%" },
+  { name: "Red", value: "0 72% 51%" },
+  { name: "Indigo", value: "231 48% 48%" },
+  { name: "Pink", value: "330 81% 54%" },
+  { name: "Gray", value: "220 9% 46%" },
+  { name: "Black", value: "0 0% 13%" },
 ];
 
 export default function CvTemplatePage() {
@@ -69,7 +77,7 @@ export default function CvTemplatePage() {
 
         <div className="mb-12">
             <h2 className="text-2xl font-semibold text-center mb-6 text-primary/90 font-headline">2. Pick a Color</h2>
-            <div className="flex justify-center gap-4">
+            <div className="flex justify-center flex-wrap gap-4">
                 {colors.map((color) => (
                     <button key={color.name} onClick={() => setSelectedColor(color.value)} className={cn("h-12 w-12 rounded-full border-2 transition-all flex items-center justify-center", selectedColor === color.value ? 'border-primary scale-110' : 'border-transparent hover:scale-105')} style={{ backgroundColor: `hsl(${color.value})`}}>
                        {selectedColor === color.value && <CheckCircle2 className="h-6 w-6 text-white"/>}
