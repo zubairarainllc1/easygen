@@ -13,6 +13,7 @@ const font = Onest({
 export const metadata: Metadata = {
   title: 'DocuGen',
   description: 'Create and manage your documents with ease.',
+  viewport: 'width=device-width, initial-scale=1.0',
 };
 
 export default function RootLayout({
