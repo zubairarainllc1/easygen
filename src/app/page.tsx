@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Logo } from "@/components/logo";
@@ -96,8 +96,20 @@ function ToolCard({ tool }: { tool: typeof tools[0] }) {
 
 export default function Home() {
     const [filter, setFilter] = useState('all');
-
+    const tabsRef = useRef<HTMLDivElement>(null);
+    const [gliderStyle, setGliderStyle] = useState({});
+    
     const filteredTools = tools.filter(tool => filter === 'all' || tool.category === filter);
+    
+    useEffect(() => {
+        const activeTab = tabsRef.current?.querySelector(`[data-state="active"]`);
+        if (activeTab instanceof HTMLElement) {
+            setGliderStyle({
+                left: activeTab.offsetLeft,
+                width: activeTab.offsetWidth,
+            });
+        }
+    }, [filter]);
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -107,14 +119,14 @@ export default function Home() {
             <NavigationMenu>
               <NavigationMenuList>
                  <NavigationMenuItem>
-                  <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                     <Link href="/">Home</Link>
-                  </NavigationMenuLink>
+                    <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                       <Link href="/">Home</Link>
+                    </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>Tools</NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <ul className="grid w-[300px] gap-3 p-4">
+                    <ul className="w-[300px] gap-3 p-4">
                       {tools.map((tool) => (
                         <ListItem
                           key={tool.title}
@@ -168,7 +180,11 @@ export default function Home() {
             </div>
              <div className="flex justify-center mb-8">
                 <Tabs value={filter} onValueChange={setFilter}>
-                    <TabsList>
+                    <TabsList ref={tabsRef} className="relative">
+                        <span 
+                            className="absolute top-0 left-0 h-full bg-background shadow-sm rounded-md transition-all duration-300 ease-in-out"
+                            style={gliderStyle}
+                        />
                         <TabsTrigger value="all">All</TabsTrigger>
                         <TabsTrigger value="document">Document</TabsTrigger>
                         <TabsTrigger value="graphic">Graphic</TabsTrigger>
