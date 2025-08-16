@@ -19,6 +19,7 @@ import {
   navigationMenuTriggerStyle
 } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import Image from "next/image";
 
 
 const tools = [
@@ -70,6 +71,39 @@ const tools = [
     category: "productive"
   }
 ];
+
+const howToSteps = [
+    {
+        title: "How to use Invoice Maker",
+        description: "Select a professional template, add your company and client details, list your services or products with quantities and prices, and download your invoice as a PDF or PNG. It's that simple!",
+        imageUrl: "https://i.postimg.cc/rF8h9HK6/Invoice-rafiki.png"
+    },
+    {
+        title: "How to use CV Maker",
+        description: "Choose from a range of modern templates, fill in your personal information, work experience, education, and skills. Our builder will format everything perfectly for a professional and polished CV.",
+        imageUrl: "https://i.postimg.cc/GhhQDs5d/Resume-bro.png"
+    },
+    {
+        title: "How to use Quotation Generator",
+        description: "Create accurate and professional quotations. Select a template, input client details, list the items or services you are quoting, and set the validity period. Download or send it directly to your client.",
+        imageUrl: "https://i.postimg.cc/R0rKg3X3/Quotation.png"
+    },
+    {
+        title: "How to use Business Card Maker",
+        description: "Design your perfect business card. Choose a template, customize the front and back with your logo, contact details, and brand colors. Download a print-ready file to make a great impression.",
+        imageUrl: "https://i.postimg.cc/Rh30rd0v/card.png"
+    },
+    {
+        title: "How to use Contract Generator",
+        description: "Draft legally-sound contracts in minutes. Select a template for your needs, define the scope of work, payment terms, and conditions. Protect your business and client relationships with clear agreements.",
+        imageUrl: "https://i.postimg.cc/pLjn5WRP/Agreement-rafiki.png"
+    },
+    {
+        title: "How to use QR Code Generator",
+        description: "Generate QR codes instantly for URLs, text, or contact information. Customize the size and color to match your branding, and download the high-quality QR code for use in print or digital media.",
+        imageUrl: "https://i.postimg.cc/rw5KFfNm/QR-Code-amico.png"
+    }
+]
 
 function ToolCard({ tool }: { tool: typeof tools[0] }) {
     return (
@@ -179,7 +213,7 @@ export default function Home() {
                   </NavigationMenuItem>
                    <NavigationMenuItem>
                      <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                       <Link href="/how-to">How To</Link>
+                       <Link href="/#how-to">How To</Link>
                      </NavigationMenuLink>
                   </NavigationMenuItem>
                 </NavigationMenuList>
@@ -200,7 +234,7 @@ export default function Home() {
                   <div className="flex flex-col gap-4 p-4">
                      <Link href="/" className="font-semibold hover:text-primary transition-colors">Home</Link>
                      <Link href="/blog" className="font-semibold hover:text-primary transition-colors">Blog</Link>
-                     <Link href="/how-to" className="font-semibold hover:text-primary transition-colors">How To</Link>
+                     <Link href="/#how-to" className="font-semibold hover:text-primary transition-colors">How To</Link>
                       <p className="font-semibold mt-4">Tools</p>
                       <div className="pl-4 flex flex-col gap-2">
                         {tools.map((tool) => (
@@ -258,6 +292,34 @@ export default function Home() {
               {filteredTools.map((tool) => <ToolCard key={tool.href} tool={tool} />)}
             </div>
           </div>
+        </section>
+
+        <section id="how-to" className="w-full py-12 md:py-24 lg:py-32">
+            <div className="container mx-auto px-4 md:px-6">
+                <div className="flex flex-col items-center text-center space-y-4 mb-12">
+                    <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl font-sans">How It Works</h2>
+                    <p className="text-muted-foreground md:text-lg max-w-2xl">A simple, step-by-step guide to using our powerful document generation tools.</p>
+                </div>
+                <div className="space-y-16">
+                    {howToSteps.map((step, index) => (
+                        <div key={index} className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+                            <div className={cn("space-y-4 text-center md:text-left", index % 2 === 1 && "md:order-last")}>
+                                <h3 className="text-2xl font-bold text-primary">{step.title}</h3>
+                                <p className="text-muted-foreground">{step.description}</p>
+                            </div>
+                            <div className="flex justify-center">
+                                <Image
+                                    src={step.imageUrl}
+                                    alt={step.title}
+                                    width={400}
+                                    height={400}
+                                    className="rounded-lg object-contain"
+                                />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
         </section>
       </main>
       <footer className="border-t">
