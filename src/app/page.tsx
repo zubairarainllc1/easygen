@@ -26,7 +26,6 @@ const tools = [
     icon: <FileText className="h-8 w-8 text-primary" />,
     title: "Invoice Maker",
     description: "Create and send professional invoices in minutes. Customize templates, add logos, and track payments.",
-    cta: "Create an Invoice",
     category: "document"
   },
   {
@@ -164,12 +163,12 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="space-y-4">
+                    <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-sans p-4 animate-gradient">
+                        100% Free
+                    </h2>
                     <Link href="#tools">
                         <Button size="lg">Explore Tools</Button>
                     </Link>
-                    <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl md:text-4xl font-sans p-4 animate-gradient">
-                        All Tools. 100% Free.
-                    </h2>
                 </div>
             </div>
           </div>
