@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -107,7 +106,7 @@ export default function Home() {
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <Link href="/" legacyBehavior={false} passHref>
+                   <Link href="/" legacyBehavior passHref>
                     <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                       Home
                     </NavigationMenuLink>
@@ -130,14 +129,14 @@ export default function Home() {
                   </NavigationMenuContent>
                 </NavigationMenuItem>
                  <NavigationMenuItem>
-                  <Link href="/blog" legacyBehavior={false} passHref>
+                  <Link href="/blog" legacyBehavior passHref>
                     <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                       Blog
                     </NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>
                  <NavigationMenuItem>
-                  <Link href="/how-to" legacyBehavior={false} passHref>
+                   <Link href="/how-to" legacyBehavior passHref>
                     <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                       How To
                     </NavigationMenuLink>
