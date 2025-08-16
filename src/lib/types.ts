@@ -76,4 +76,7 @@ export interface ContractData {
   scopeOfWork: string;
   paymentTerms: string;
   termsAndConditions: string;
+  companyLogo?: string;
+  companyName: string;
 }
+

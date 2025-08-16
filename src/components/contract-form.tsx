@@ -17,14 +17,30 @@ import { Textarea } from '@/components/ui/textarea';
 interface ContractFormProps {
   contract: ContractData;
   setContract: (contract: ContractData) => void;
+  withCompanyLogo: boolean;
 }
 
-export default function ContractForm({ contract, setContract }: ContractFormProps) {
+export default function ContractForm({ contract, setContract, withCompanyLogo }: ContractFormProps) {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setContract({ ...contract, [name]: value });
   };
   
+  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if(event.target?.result) {
+            setContract({
+                ...contract,
+                companyLogo: event.target.result as string,
+            });
+        }
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  };
+
   return (
     <Card className="shadow-lg">
       <CardHeader>
@@ -35,6 +51,15 @@ export default function ContractForm({ contract, setContract }: ContractFormProp
             <Label htmlFor="title">Contract Title</Label>
             <Input id="title" name="title" value={contract.title} onChange={handleInputChange} />
         </div>
+         {withCompanyLogo && (
+            <div className="space-y-2">
+                <Label htmlFor="companyLogo">Company Logo</Label>
+                <div className="flex items-center gap-4">
+                    {contract.companyLogo && <img src={contract.companyLogo} alt="Company Logo" className="w-24 h-auto bg-gray-200 p-1 rounded"/>}
+                    <Input id="companyLogo" name="companyLogo" type="file" accept="image/*" onChange={handleLogoChange} className="w-auto"/>
+                </div>
+            </div>
+        )}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="clientName">Client Name</Label>
