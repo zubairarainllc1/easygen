@@ -17,6 +17,11 @@ export interface Invoice {
   notes: string;
 }
 
+export interface Quotation extends Omit<Invoice, 'invoiceNumber'> {
+  quotationNumber: string;
+  validUntil: Date;
+}
+
 export interface CvData {
   personalInfo: {
     name: string;

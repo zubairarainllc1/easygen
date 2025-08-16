@@ -11,8 +11,8 @@ const font = Onest({
 })
 
 export const metadata: Metadata = {
-  title: 'InvoiceFlow',
-  description: 'Create and manage your invoices with ease.',
+  title: 'DocuGen',
+  description: 'Create and manage your documents with ease.',
 };
 
 export default function RootLayout({

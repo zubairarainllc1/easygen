@@ -1,0 +1,138 @@
+
+"use client";
+
+import { useState, useRef } from "react";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import type { Quotation } from "@/lib/types";
+import QuotationForm from "@/components/quotation-form";
+import QuotationPreview from "@/components/quotation-preview";
+import { Card } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
+import { Logo } from "@/components/logo";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight, Download, Eye } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
+import { addDays } from "date-fns";
+
+export default function QuotationPage() {
+  const { toast } = useToast();
+  const pdfRef = useRef<HTMLDivElement>(null);
+  const [isPreviewVisible, setIsPreviewVisible] = useState(true);
+
+  const [quotation, setQuotation] = useState<Quotation>({
+    quotationNumber: "QUO-001",
+    date: new Date(),
+    validUntil: addDays(new Date(), 14),
+    clientName: "Future Client",
+    clientEmail: "contact@futureclient.com",
+    clientAddress: "456 Prospect Ave\nSomecity, USA 67890",
+    items: [
+      { id: "1", name: "Initial Project Consultation", quantity: 2, price: 150 },
+      { id: "2", name: "Website Design Mockup", quantity: 1, price: 750 },
+    ],
+    taxRate: 0,
+    notes: "This quotation is valid for 14 days. Prices are subject to change afterwards.",
+  });
+
+  const handleGeneratePDF = () => {
+    if (!isPreviewVisible) {
+      setIsPreviewVisible(true);
+      toast({ title: "Preview opened", description: "The quotation preview is now visible for PDF generation." });
+      
+      setTimeout(() => {
+        generatePdfFromRef(pdfRef.current);
+      }, 500);
+      return;
+    }
+    generatePdfFromRef(pdfRef.current);
+  };
+  
+  const generatePdfFromRef = (input: HTMLDivElement | null) => {
+    if (input) {
+      toast({ title: "Generating PDF...", description: "Please wait a moment." });
+      html2canvas(input, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "white",
+      })
+        .then((canvas) => {
+          const imgData = canvas.toDataURL("image/png");
+          const pdf = new jsPDF("p", "mm", "a4");
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+          pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+          pdf.save(`quotation-${quotation.quotationNumber || "draft"}.pdf`);
+          toast({ title: "Success!", description: "Your quotation has been downloaded." });
+        })
+        .catch((err) => {
+          toast({ variant: "destructive", title: "Error", description: "Failed to generate PDF." });
+          console.error(err);
+        });
+    }
+  }
+
+  const handlePreview = () => {
+     setIsPreviewVisible(true);
+     toast({ title: "Preview Shown", description: "The quotation preview is now visible." });
+  }
+
+  return (
+    <main className="min-h-screen bg-muted/50">
+       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container h-14 flex items-center">
+            <Logo />
+        </div>
+      </header>
+      <div className="container mx-auto p-4 sm:p-6 lg:p-8">
+        <div className="relative flex flex-1">
+          <div className={cn("transition-all duration-500 ease-in-out", isPreviewVisible ? 'w-full lg:w-2/5' : 'w-full')}>
+            <QuotationForm
+              quotation={quotation}
+              setQuotation={setQuotation}
+            />
+          </div>
+
+          <div className={cn("mx-4", isPreviewVisible ? 'block' : 'hidden')}>
+              <Separator orientation="vertical" />
+          </div>
+          
+          <Button 
+            variant="outline" 
+            size="icon" 
+            className="absolute top-1/2 -translate-y-1/2 rounded-full bg-background z-10"
+            style={{ left: isPreviewVisible ? 'calc(41.666667% - 1.25rem)' : 'calc(100% - 3rem)', transition: 'left 0.5s ease-in-out'  }}
+            onClick={() => setIsPreviewVisible(!isPreviewVisible)}
+            >
+              {isPreviewVisible ? <ChevronLeft /> : <ChevronRight />}
+          </Button>
+
+          <div 
+            className={cn(
+                "lg:w-3/5 transition-all duration-500 ease-in-out sticky top-24 h-fit",
+                isPreviewVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full absolute w-full'
+            )}
+            style={{ transformOrigin: 'right center' }}
+          >
+            <Card className="shadow-lg">
+              <div ref={pdfRef} className="bg-card">
+                <QuotationPreview quotation={quotation} />
+              </div>
+              <div className="p-4 bg-muted/30 border-t flex justify-end gap-2">
+                <Button variant="outline" onClick={handlePreview}>
+                    <Eye />
+                    Preview
+                </Button>
+                <Button onClick={handleGeneratePDF}>
+                    <Download />
+                    Download
+                </Button>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
