@@ -1,3 +1,4 @@
+
 export interface InvoiceItem {
   id: string;
   name: string;
@@ -23,6 +24,7 @@ export interface CvData {
     phone: string;
     address: string;
     website: string;
+    profileImage: string;
   };
   summary: string;
   experience: {

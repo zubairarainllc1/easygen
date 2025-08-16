@@ -6,7 +6,10 @@ export default function ClassicTemplate({ cvData }: { cvData: CvData }) {
   return (
     <div className="p-8 font-serif bg-white text-gray-800">
       {/* Header */}
-      <div className="text-center border-b-2 border-gray-400 pb-4 mb-6">
+      <div className="text-center border-b-2 border-gray-400 pb-4 mb-6 flex flex-col items-center">
+        {cvData.personalInfo.profileImage && (
+            <img src={cvData.personalInfo.profileImage} alt="Profile" data-ai-hint="person" className="w-32 h-32 rounded-full object-cover mb-4" />
+        )}
         <h1 className="text-5xl font-bold tracking-wider uppercase">
           {cvData.personalInfo.name}
         </h1>

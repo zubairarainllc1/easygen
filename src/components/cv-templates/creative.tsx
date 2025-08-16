@@ -8,9 +8,13 @@ export default function CreativeTemplate({ cvData }: { cvData: CvData }) {
       {/* Header */}
       <div className="text-center mb-8">
         <div
-          className="w-32 h-32 rounded-full mx-auto mb-4 bg-primary/20 flex items-center justify-center"
+          className="w-32 h-32 rounded-full mx-auto mb-4 bg-primary/20 flex items-center justify-center overflow-hidden"
         >
-            <span className="text-5xl font-bold text-primary">{cvData.personalInfo.name.charAt(0)}</span>
+            {cvData.personalInfo.profileImage ? (
+                <img src={cvData.personalInfo.profileImage} alt="Profile" data-ai-hint="person" className="w-full h-full object-cover"/>
+            ) : (
+                <span className="text-5xl font-bold text-primary">{cvData.personalInfo.name.charAt(0)}</span>
+            )}
         </div>
         <h1 className="text-5xl font-extrabold text-primary tracking-tighter">
           {cvData.personalInfo.name}

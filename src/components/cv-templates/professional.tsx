@@ -10,6 +10,9 @@ export default function ProfessionalTemplate({ cvData }: { cvData: CvData }) {
             {/* Left Column */}
             <div className="col-span-4 pr-8 border-r-2 border-gray-200">
                 <div className="text-center mb-8">
+                     {cvData.personalInfo.profileImage && (
+                        <img src={cvData.personalInfo.profileImage} alt="Profile" data-ai-hint="person" className="w-32 h-32 rounded-full object-cover mx-auto mb-4" />
+                    )}
                     <h1 className="text-4xl font-bold text-primary">
                     {cvData.personalInfo.name}
                     </h1>

@@ -2,7 +2,7 @@
 'use client';
 
 import React from 'react';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, Upload } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { CvData } from '@/lib/types';
 import { Button } from '@/components/ui/button';
@@ -15,15 +15,31 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './
 interface CvFormProps {
   cvData: CvData;
   setCvData: (data: CvData) => void;
+  withProfileImage: boolean;
 }
 
-export default function CvForm({ cvData, setCvData }: CvFormProps) {
+export default function CvForm({ cvData, setCvData, withProfileImage }: CvFormProps) {
   const handlePersonalInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setCvData({
       ...cvData,
       personalInfo: { ...cvData.personalInfo, [name]: value },
     });
+  };
+
+  const handleProfileImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if(event.target?.result) {
+            setCvData({
+            ...cvData,
+            personalInfo: { ...cvData.personalInfo, profileImage: event.target.result as string },
+            });
+        }
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
   };
   
   const handleSummaryChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -77,6 +93,15 @@ export default function CvForm({ cvData, setCvData }: CvFormProps) {
           <AccordionItem value="personal">
             <AccordionTrigger className="text-lg font-medium text-primary font-headline">Personal Information</AccordionTrigger>
             <AccordionContent className="space-y-4 pt-4">
+              {withProfileImage && (
+                <div className="space-y-2">
+                    <Label htmlFor="profileImage">Profile Image</Label>
+                    <div className="flex items-center gap-4">
+                        {cvData.personalInfo.profileImage && <img src={cvData.personalInfo.profileImage} alt="Profile" className="w-16 h-16 rounded-full object-cover"/>}
+                        <Input id="profileImage" name="profileImage" type="file" accept="image/*" onChange={handleProfileImageChange} className="w-auto"/>
+                    </div>
+                </div>
+              )}
               <div className="space-y-2">
                 <Label htmlFor="name">Full Name</Label>
                 <Input id="name" name="name" value={cvData.personalInfo.name} onChange={handlePersonalInfoChange} />

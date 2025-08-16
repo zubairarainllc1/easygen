@@ -7,7 +7,10 @@ export default function ModernTemplate({ cvData }: { cvData: CvData }) {
   return (
     <div className="p-8 font-sans bg-white text-gray-800 flex gap-8">
       {/* Left Column */}
-      <div className="w-1/3 bg-gray-100 p-6 rounded-lg">
+      <div className="w-1/3 bg-gray-100 p-6 rounded-lg flex flex-col items-center text-center">
+        {cvData.personalInfo.profileImage && (
+            <img src={cvData.personalInfo.profileImage} alt="Profile" data-ai-hint="person" className="w-32 h-32 rounded-full object-cover mb-4" />
+        )}
         <h1 className="text-4xl font-extrabold text-primary mb-2">
           {cvData.personalInfo.name}
         </h1>
@@ -40,7 +43,7 @@ export default function ModernTemplate({ cvData }: { cvData: CvData }) {
         <Separator className="my-6 bg-gray-300"/>
 
         <h2 className="text-xl font-bold text-primary mb-4 uppercase tracking-wider">Skills</h2>
-         <div className="flex flex-wrap gap-2">
+         <div className="flex flex-wrap gap-2 justify-center">
             {cvData.skills.map((skill) => (
                 <span key={skill} className="bg-primary/20 text-primary text-xs font-semibold px-3 py-1 rounded-full">
                     {skill}

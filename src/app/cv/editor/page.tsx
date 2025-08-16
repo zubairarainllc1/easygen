@@ -30,10 +30,14 @@ function CvEditorPageContent() {
   
   const [template, setTemplate] = useState<"classic" | "modern" | "minimalist" | "creative" | "professional">("classic");
   const [primaryColor, setPrimaryColor] = useState("228 65% 33%"); // Default blue
+  const [withProfileImage, setWithProfileImage] = useState(false);
 
   useEffect(() => {
     const templateParam = searchParams.get('template');
     const colorParam = searchParams.get('color');
+    const withProfileImageParam = searchParams.get('withProfileImage') === 'true';
+
+    setWithProfileImage(withProfileImageParam);
 
     if (templateParam === 'classic' || templateParam === 'modern' || templateParam === 'minimalist' || templateParam === 'creative' || templateParam === 'professional') {
       setTemplate(templateParam);
@@ -55,6 +59,7 @@ function CvEditorPageContent() {
       phone: "123-456-7890",
       address: "123 Main St, Anytown USA",
       website: "johndoe.com",
+      profileImage: withProfileImage ? "https://placehold.co/150x150.png" : "",
     },
     summary:
       "A highly motivated and results-oriented professional with a proven track record of success in fast-paced environments. Seeking a challenging role to leverage my skills in project management and software development.",
@@ -89,6 +94,15 @@ function CvEditorPageContent() {
     ],
     skills: ["JavaScript", "React", "Node.js", "TypeScript", "SQL"],
   });
+
+  useEffect(() => {
+    if (withProfileImage) {
+      setCvData(prev => ({...prev, personalInfo: {...prev.personalInfo, profileImage: prev.personalInfo.profileImage || "https://placehold.co/150x150.png"}}));
+    } else {
+       setCvData(prev => ({...prev, personalInfo: {...prev.personalInfo, profileImage: ""}}));
+    }
+  }, [withProfileImage]);
+
 
   const generatePdfFromRef = (input: HTMLDivElement | null) => {
     if (input) {
@@ -143,7 +157,7 @@ function CvEditorPageContent() {
       <div className="mx-auto max-w-screen-2xl p-4 sm:p-6 lg:p-8">
         <div className="relative flex flex-1">
           <div className={cn("transition-all duration-500 ease-in-out", isPreviewVisible ? "w-full lg:w-2/5" : "w-full")}>
-            <CvForm cvData={cvData} setCvData={setCvData} />
+            <CvForm cvData={cvData} setCvData={setCvData} withProfileImage={withProfileImage} />
           </div>
 
           <div className={cn("mx-4", isPreviewVisible ? "block" : "hidden")}>
