@@ -152,10 +152,10 @@ export default function Home() {
         </div>
       </header>
       <main className="flex-1">
-        <section className="w-full py-20 md:py-32 lg:py-40">
+        <section className="w-full py-20 md:py-24 lg:py-32">
           <div className="container mx-auto px-4 md:px-6">
-            <div className="flex flex-col items-center space-y-4 text-center">
-                <div className="space-y-2">
+            <div className="flex flex-col items-center space-y-6 text-center">
+                <div className="space-y-4">
                   <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl font-sans p-4 animate-gradient">
                     Create Professional Documents in Seconds
                   </h1>
@@ -163,10 +163,13 @@ export default function Home() {
                     Our powerful tools help you generate beautiful invoices, CVs, and more. Focus on your work, we'll handle the paperwork.
                   </p>
                 </div>
-                <div className="space-x-4">
+                <div className="space-y-4">
                     <Link href="#tools">
                         <Button size="lg">Explore Tools</Button>
                     </Link>
+                    <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl md:text-4xl font-sans p-4 animate-gradient">
+                        All Tools. 100% Free.
+                    </h2>
                 </div>
             </div>
           </div>
