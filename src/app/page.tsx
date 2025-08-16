@@ -106,17 +106,15 @@ export default function Home() {
             <Logo />
             <NavigationMenu>
               <NavigationMenuList>
-                <NavigationMenuItem>
-                  <Link href="/" legacyBehavior passHref>
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                      Home
-                    </NavigationMenuLink>
-                  </Link>
+                 <NavigationMenuItem>
+                  <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                     <Link href="/">Home</Link>
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>Tools</NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                    <ul className="grid w-[300px] gap-3 p-4">
                       {tools.map((tool) => (
                         <ListItem
                           key={tool.title}
@@ -128,18 +126,14 @@ export default function Home() {
                   </NavigationMenuContent>
                 </NavigationMenuItem>
                  <NavigationMenuItem>
-                  <Link href="/blog" legacyBehavior passHref>
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                      Blog
-                    </NavigationMenuLink>
-                  </Link>
+                   <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                     <Link href="/blog">Blog</Link>
+                   </NavigationMenuLink>
                 </NavigationMenuItem>
                  <NavigationMenuItem>
-                  <Link href="/how-to" legacyBehavior passHref>
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                      How To
-                    </NavigationMenuLink>
-                  </Link>
+                   <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                     <Link href="/how-to">How To</Link>
+                   </NavigationMenuLink>
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
