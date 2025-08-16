@@ -107,7 +107,7 @@ export default function Home() {
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <Link href="/" legacyBehavior passHref>
+                  <Link href="/" legacyBehavior={false} passHref>
                     <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                       Home
                     </NavigationMenuLink>
@@ -130,14 +130,14 @@ export default function Home() {
                   </NavigationMenuContent>
                 </NavigationMenuItem>
                  <NavigationMenuItem>
-                  <Link href="/blog" legacyBehavior passHref>
+                  <Link href="/blog" legacyBehavior={false} passHref>
                     <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                       Blog
                     </NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>
                  <NavigationMenuItem>
-                  <Link href="/how-to" legacyBehavior passHref>
+                  <Link href="/how-to" legacyBehavior={false} passHref>
                     <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                       How To
                     </NavigationMenuLink>
