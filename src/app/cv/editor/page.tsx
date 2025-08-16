@@ -139,8 +139,18 @@ function CvEditorPageContent() {
   };
   
   const handlePreview = () => {
-    setIsPreviewVisible(true);
-    toast({ title: "Preview Shown", description: "The CV preview is now visible." });
+    try {
+      const previewData = { cvData, template, primaryColor };
+      localStorage.setItem('cvPreviewData', JSON.stringify(previewData));
+      window.open('/cv/preview', '_blank');
+    } catch (error) {
+      console.error("Could not open preview", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Could not open preview window."
+      })
+    }
   };
 
 
