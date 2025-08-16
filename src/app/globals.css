@@ -75,7 +75,7 @@
 
 @layer utilities {
   .animate-gradient {
-    background: linear-gradient(-45deg, #fde047, #f97316, #ec4899, #8b5cf6);
+    background: linear-gradient(-45deg, #fde047, #f97316, #ec4899);
     background-size: 400% 400%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
