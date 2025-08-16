@@ -15,15 +15,24 @@ const formatCurrency = (amount: number) => {
   }).format(amount);
 };
 
-export default function SimpleInvoice({ invoice }: { invoice: Invoice }) {
+interface TemplateProps {
+    invoice: Invoice;
+    isQuotation?: boolean;
+    validUntil?: Date;
+}
+
+export default function SimpleInvoice({ invoice, isQuotation = false, validUntil }: TemplateProps) {
   const subtotal = invoice.items.reduce((acc, item) => acc + item.quantity * item.price, 0);
   const taxAmount = subtotal * (invoice.taxRate / 100);
   const total = subtotal + taxAmount;
+  const docType = isQuotation ? "QUOTATION" : "INVOICE";
+  const docNumberLabel = isQuotation ? "Quotation #:" : "Invoice #:";
+  const billToLabel = isQuotation ? "Quote To:" : "Bill To:";
 
   return (
     <div className="p-10 bg-card text-card-foreground rounded-lg font-serif text-sm">
       <div className="flex justify-between items-center mb-10">
-        <h1 className="text-3xl font-bold" style={{color: primaryColor}}>INVOICE</h1>
+        <h1 className="text-3xl font-bold" style={{color: primaryColor}}>{docType}</h1>
         {invoice.companyLogo && <img src={invoice.companyLogo} data-ai-hint="logo" alt="Company Logo" className="h-14 w-auto" />}
       </div>
 
@@ -34,13 +43,14 @@ export default function SimpleInvoice({ invoice }: { invoice: Invoice }) {
           <p>{invoice.companyEmail || 'your-email@company.com'}</p>
         </div>
         <div className="text-right">
-          <p><strong>Invoice #:</strong> {invoice.invoiceNumber}</p>
+          <p><strong>{docNumberLabel}</strong> {invoice.invoiceNumber}</p>
           <p><strong>Date:</strong> {format(invoice.date, 'PPP')}</p>
+          {isQuotation && validUntil && <p><strong>Valid Until:</strong> {format(validUntil, 'PPP')}</p>}
         </div>
       </div>
       
       <div className="mb-8 p-4 border rounded-md">
-        <h3 className="font-semibold mb-2">Bill To:</h3>
+        <h3 className="font-semibold mb-2">{billToLabel}</h3>
         <p className="font-bold">{invoice.clientName || 'Client Name'}</p>
         <p className="whitespace-pre-wrap">{invoice.clientAddress || 'Client Address'}</p>
         <p>{invoice.clientEmail || 'client@email.com'}</p>

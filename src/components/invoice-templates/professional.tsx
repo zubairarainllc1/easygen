@@ -15,10 +15,17 @@ const formatCurrency = (amount: number) => {
   }).format(amount);
 };
 
-export default function ProfessionalInvoice({ invoice }: { invoice: Invoice }) {
+interface TemplateProps {
+    invoice: Invoice;
+    isQuotation?: boolean;
+    validUntil?: Date;
+}
+
+export default function ProfessionalInvoice({ invoice, isQuotation = false, validUntil }: TemplateProps) {
   const subtotal = invoice.items.reduce((acc, item) => acc + item.quantity * item.price, 0);
   const taxAmount = subtotal * (invoice.taxRate / 100);
   const total = subtotal + taxAmount;
+  const docType = isQuotation ? "QUOTATION" : "INVOICE";
 
   return (
     <div className="p-10 bg-card text-card-foreground rounded-lg font-sans">
@@ -31,9 +38,10 @@ export default function ProfessionalInvoice({ invoice }: { invoice: Invoice }) {
             )}
         </div>
         <div className="text-right flex-shrink-0">
-          <h2 className="text-3xl font-bold uppercase" style={{ color: primaryColor }}>INVOICE</h2>
+          <h2 className="text-3xl font-bold uppercase" style={{ color: primaryColor }}>{docType}</h2>
           <p className="text-muted-foreground">#{invoice.invoiceNumber}</p>
           <p className="text-muted-foreground mt-1">Date: {format(invoice.date, 'PPP')}</p>
+          {isQuotation && validUntil && <p className="text-muted-foreground">Valid Until: {format(validUntil, 'PPP')}</p>}
         </div>
       </div>
 
@@ -41,7 +49,7 @@ export default function ProfessionalInvoice({ invoice }: { invoice: Invoice }) {
 
       <div className="grid grid-cols-2 gap-8 mb-8">
         <div>
-          <h3 className="font-semibold mb-2" style={{color: primaryColor}}>Billed To:</h3>
+          <h3 className="font-semibold mb-2" style={{color: primaryColor}}>{isQuotation ? "Quote For:" : "Billed To:"}</h3>
           <p className="font-bold">{invoice.clientName || 'Client Name'}</p>
           <p>{invoice.clientEmail || 'client@email.com'}</p>
           <p className="whitespace-pre-wrap">{invoice.clientAddress || 'Client Address'}</p>

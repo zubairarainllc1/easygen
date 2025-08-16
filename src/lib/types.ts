@@ -1,4 +1,5 @@
 
+
 export interface InvoiceItem {
   id: string;
   name: string;
@@ -21,7 +22,7 @@ export interface Invoice {
   companyAddress: string;
 }
 
-export interface Quotation extends Omit<Invoice, 'invoiceNumber'> {
+export interface Quotation extends Invoice {
   quotationNumber: string;
   validUntil: Date;
 }

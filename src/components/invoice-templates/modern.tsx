@@ -16,10 +16,20 @@ const formatCurrency = (amount: number) => {
   }).format(amount);
 };
 
-export default function ModernInvoice({ invoice }: { invoice: Invoice }) {
+interface TemplateProps {
+    invoice: Invoice;
+    isQuotation?: boolean;
+    validUntil?: Date;
+}
+
+export default function ModernInvoice({ invoice, isQuotation = false, validUntil }: TemplateProps) {
   const subtotal = invoice.items.reduce((acc, item) => acc + item.quantity * item.price, 0);
   const taxAmount = subtotal * (invoice.taxRate / 100);
   const total = subtotal + taxAmount;
+  const docType = isQuotation ? "QUOTATION" : "INVOICE";
+  const docNumberLabel = isQuotation ? "Quotation No." : "Invoice No.";
+  const dateLabel = isQuotation ? "Date of Issue" : "Date of Issue";
+  const billedToLabel = isQuotation ? "Quote To" : "Billed To";
 
   return (
     <div className="p-10 bg-card text-card-foreground rounded-lg font-sans">
@@ -36,24 +46,28 @@ export default function ModernInvoice({ invoice }: { invoice: Invoice }) {
       </div>
       
       <div className="w-1/2">
-        <h2 className="text-4xl font-bold tracking-tight">INVOICE</h2>
+        <h2 className="text-4xl font-bold tracking-tight">{docType}</h2>
         <div className="w-24 h-1.5 rounded-full my-3" style={{backgroundColor: primaryColor}}></div>
       </div>
 
       <div className="grid grid-cols-3 gap-8 my-8">
         <div>
-            <h3 className="font-semibold mb-2 text-sm uppercase tracking-wider" style={{color: primaryColor}}>Billed To</h3>
+            <h3 className="font-semibold mb-2 text-sm uppercase tracking-wider" style={{color: primaryColor}}>{billedToLabel}</h3>
              <p className="font-bold">{invoice.clientName || 'Client Name'}</p>
             <p className="text-sm text-muted-foreground">{invoice.clientEmail || 'client@email.com'}</p>
             <p className="text-sm text-muted-foreground whitespace-pre-wrap">{invoice.clientAddress || 'Client Address'}</p>
         </div>
         <div>
-            <h3 className="font-semibold mb-2 text-sm uppercase tracking-wider" style={{color: primaryColor}}>Invoice No.</h3>
+            <h3 className="font-semibold mb-2 text-sm uppercase tracking-wider" style={{color: primaryColor}}>{docNumberLabel}</h3>
             <p>{invoice.invoiceNumber}</p>
         </div>
         <div>
-             <h3 className="font-semibold mb-2 text-sm uppercase tracking-wider" style={{color: primaryColor}}>Date of Issue</h3>
+             <h3 className="font-semibold mb-2 text-sm uppercase tracking-wider" style={{color: primaryColor}}>{dateLabel}</h3>
              <p>{format(invoice.date, 'PPP')}</p>
+             {isQuotation && validUntil && <>
+                <h3 className="font-semibold mt-4 mb-2 text-sm uppercase tracking-wider" style={{color: primaryColor}}>Valid Until</h3>
+                <p>{format(validUntil, 'PPP')}</p>
+             </>}
         </div>
       </div>
 
