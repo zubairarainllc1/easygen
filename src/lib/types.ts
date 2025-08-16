@@ -49,3 +49,15 @@ export interface CvData {
   }[];
   skills: string[];
 }
+
+export interface BusinessCardData {
+    name: string;
+    title: string;
+    companyName: string;
+    email: string;
+    phone: string;
+    website: string;
+    address: string;
+    logoUrl?: string;
+    accentColor: string;
+}
