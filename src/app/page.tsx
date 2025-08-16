@@ -6,7 +6,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Logo } from "@/components/logo";
-import { ArrowRight, FileSignature, FileText, MoveRight, FileJson, Contact, FileCheck2, QrCode } from "lucide-react";
+import { ArrowRight, FileSignature, FileText, MoveRight, FileJson, Contact, FileCheck2, QrCode, Menu } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import {
@@ -18,6 +18,7 @@ import {
   NavigationMenuContent,
   navigationMenuTriggerStyle
 } from "@/components/ui/navigation-menu";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 
 const tools = [
@@ -151,39 +152,64 @@ export default function Home() {
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container h-16 flex items-center justify-between">
             <Logo />
-            <NavigationMenu>
-              <NavigationMenuList>
-                 <NavigationMenuItem>
-                    <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                       <Link href="/">Home</Link>
-                    </NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger>Tools</NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul className="w-[200px] gap-3 p-4">
-                      {tools.map((tool) => (
-                        <ListItem
-                          key={tool.title}
-                          title={tool.title}
-                          href={tool.href}
-                        />
-                      ))}
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-                 <NavigationMenuItem>
-                   <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                     <Link href="/blog">Blog</Link>
-                   </NavigationMenuLink>
-                </NavigationMenuItem>
-                 <NavigationMenuItem>
-                   <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                     <Link href="/how-to">How To</Link>
-                   </NavigationMenuLink>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
+            <nav className="hidden md:flex">
+              <NavigationMenu>
+                <NavigationMenuList>
+                   <NavigationMenuItem>
+                      <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                         <Link href="/">Home</Link>
+                      </NavigationMenuLink>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger>Tools</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <ul className="w-[200px] gap-3 p-4">
+                        {tools.map((tool) => (
+                          <ListItem
+                            key={tool.title}
+                            title={tool.title}
+                            href={tool.href}
+                          />
+                        ))}
+                      </ul>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                   <NavigationMenuItem>
+                     <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                       <Link href="/blog">Blog</Link>
+                     </NavigationMenuLink>
+                  </NavigationMenuItem>
+                   <NavigationMenuItem>
+                     <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                       <Link href="/how-to">How To</Link>
+                     </NavigationMenuLink>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
+            </nav>
+            <div className="md:hidden">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="icon">
+                    <Menu className="h-6 w-6" />
+                    <span className="sr-only">Open navigation menu</span>
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right">
+                  <div className="flex flex-col gap-4 p-4">
+                     <Link href="/" className="font-semibold hover:text-primary transition-colors">Home</Link>
+                     <Link href="/blog" className="font-semibold hover:text-primary transition-colors">Blog</Link>
+                     <Link href="/how-to" className="font-semibold hover:text-primary transition-colors">How To</Link>
+                      <p className="font-semibold mt-4">Tools</p>
+                      <div className="pl-4 flex flex-col gap-2">
+                        {tools.map((tool) => (
+                           <Link key={tool.href} href={tool.href} className="text-muted-foreground hover:text-primary transition-colors">{tool.title}</Link>
+                        ))}
+                      </div>
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
         </div>
       </header>
       <main className="flex-1">
@@ -191,7 +217,7 @@ export default function Home() {
           <div className="container mx-auto px-4 md:px-6">
             <div className="flex flex-col items-center space-y-6 text-center">
                 <div className="space-y-4">
-                  <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl font-sans p-4 text-gray-900">
+                  <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl font-sans text-gray-900">
                     Create Professional <span className="text-primary"><TypingAnimation /></span>
                   </h1>
                   <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
@@ -234,7 +260,7 @@ export default function Home() {
         </section>
       </main>
       <footer className="border-t">
-        <div className="container py-8 flex items-center justify-between">
+        <div className="container py-8 flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm text-muted-foreground">Built by Codexign</p>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
                 <Link href="#" className="hover:text-primary transition-colors">Privacy Policy</Link>
