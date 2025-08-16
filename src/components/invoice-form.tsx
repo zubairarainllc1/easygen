@@ -1,11 +1,10 @@
 'use client';
 
-import React, { useState, useTransition } from 'react';
+import React from 'react';
 import { format } from 'date-fns';
-import { Calendar as CalendarIcon, Download, Plus, Trash2, Wand2, Loader2 } from 'lucide-react';
+import { Calendar as CalendarIcon, Download, Plus, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Invoice, InvoiceItem } from '@/lib/types';
-import { getSuggestions } from '@/lib/actions';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
@@ -14,8 +13,6 @@ import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Textarea } from '@/components/ui/textarea';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { useToast } from '@/hooks/use-toast';
 
 interface InvoiceFormProps {
   invoice: Invoice;
@@ -24,11 +21,6 @@ interface InvoiceFormProps {
 }
 
 export default function InvoiceForm({ invoice, setInvoice, onGeneratePDF }: InvoiceFormProps) {
-  const [isSuggesting, setIsSuggesting] = useState(false);
-  const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
-  const { toast } = useToast();
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setInvoice({ ...invoice, [name]: value });
@@ -58,35 +50,6 @@ export default function InvoiceForm({ invoice, setInvoice, onGeneratePDF }: Invo
     setInvoice({ ...invoice, items: invoice.items.filter((item) => item.id !== id) });
   };
   
-  const handleAISuggestions = async () => {
-    setIsSuggesting(true);
-    const draft = `Client: ${invoice.clientName}\nItems already present:\n${invoice.items.map(i => `- ${i.name}`).join('\n')}`;
-    try {
-      const result = await getSuggestions(draft);
-      if(result.length > 0) {
-          setSuggestions(result);
-          setIsSuggestionsOpen(true);
-      } else {
-          toast({ variant: "default", title: "AI Suggestion", description: "No new suggestions found based on the current invoice details." });
-      }
-    } catch (e) {
-      toast({ variant: "destructive", title: "Error", description: "Could not fetch AI suggestions." });
-    } finally {
-      setIsSuggesting(false);
-    }
-  };
-
-  const addSuggestionToItems = (suggestion: string) => {
-    const newItem: InvoiceItem = {
-      id: Date.now().toString(),
-      name: suggestion,
-      quantity: 1,
-      price: 0,
-    };
-    setInvoice({ ...invoice, items: [...invoice.items, newItem] });
-    setIsSuggestionsOpen(false);
-  };
-
   return (
     <Card className="shadow-lg">
       <CardHeader>
@@ -136,10 +99,6 @@ export default function InvoiceForm({ invoice, setInvoice, onGeneratePDF }: Invo
         <div>
           <div className="flex justify-between items-center mb-2">
              <h3 className="text-lg font-medium text-primary font-headline">Items</h3>
-             <Button variant="outline" size="sm" onClick={handleAISuggestions} disabled={isSuggesting}>
-                {isSuggesting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Wand2 className="mr-2 h-4 w-4" />}
-                Suggest
-             </Button>
           </div>
           <div className="border rounded-md">
             <Table>
@@ -194,22 +153,6 @@ export default function InvoiceForm({ invoice, setInvoice, onGeneratePDF }: Invo
             Generate Invoice
         </Button>
       </CardFooter>
-
-      <Dialog open={isSuggestionsOpen} onOpenChange={setIsSuggestionsOpen}>
-        <DialogContent>
-            <DialogHeader>
-                <DialogTitle>AI Suggestions</DialogTitle>
-                <DialogDescription>Click a suggestion to add it as a new item.</DialogDescription>
-            </DialogHeader>
-            <div className="flex flex-col gap-2 max-h-60 overflow-y-auto">
-                {suggestions.map((s, i) => (
-                    <Button key={i} variant="ghost" className="justify-start" onClick={() => addSuggestionToItems(s)}>
-                        {s}
-                    </Button>
-                ))}
-            </div>
-        </DialogContent>
-      </Dialog>
     </Card>
   );
 }
