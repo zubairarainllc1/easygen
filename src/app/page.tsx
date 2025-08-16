@@ -217,7 +217,7 @@ export default function Home() {
                 <Tabs value={filter} onValueChange={setFilter}>
                     <TabsList ref={tabsRef} className="relative">
                         <span 
-                            className="absolute top-0 left-0 h-full bg-background shadow-sm rounded-md transition-all duration-300 ease-in-out"
+                            className="absolute top-0 left-0 h-full bg-primary shadow-sm rounded-md transition-all duration-300 ease-in-out"
                             style={gliderStyle}
                         />
                         <TabsTrigger value="all">All</TabsTrigger>
