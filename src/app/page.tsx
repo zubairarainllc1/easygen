@@ -74,21 +74,11 @@ const tools = [
 function ToolCard({ tool }: { tool: typeof tools[0] }) {
     return (
         <Link href={tool.href}>
-            <Card className="h-full hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group">
-              <CardHeader className="p-8">
-                <div className="bg-primary/10 p-4 rounded-full inline-block mb-4 self-start">
-                   {tool.icon}
+            <Card className="h-full hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group flex flex-col items-center justify-center text-center p-6">
+               <div className="bg-primary/10 p-3 rounded-full inline-block mb-3">
+                   {React.cloneElement(tool.icon, { className: "h-6 w-6 text-primary" })}
                 </div>
-                <CardTitle className="text-2xl">{tool.title}</CardTitle>
-                <CardDescription className="text-base">
-                  {tool.description}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="p-8 pt-0">
-                  <div className="flex items-center text-primary font-semibold">
-                    {tool.cta || `Explore ${tool.title}`} <MoveRight className="ml-2 transition-transform group-hover:translate-x-1" />
-                  </div>
-              </CardContent>
+                <CardTitle className="text-lg">{tool.title}</CardTitle>
             </Card>
         </Link>
     )
@@ -256,7 +246,7 @@ export default function Home() {
                     </TabsList>
                 </Tabs>
             </div>
-            <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 py-12 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 py-12 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
               {filteredTools.map((tool) => <ToolCard key={tool.href} tool={tool} />)}
             </div>
           </div>
