@@ -160,7 +160,7 @@ export default function Home() {
                     Create Professional Documents in Seconds
                   </h1>
                   <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                    Our powerful tools help you generate beautiful invoices, CVs, and more. Focus on your work, we'll handle the paperwork.
+                    Your one-stop solution for generating professional documents, business cards, QR codes, and more.
                   </p>
                 </div>
                 <div className="space-x-4">
