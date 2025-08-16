@@ -126,7 +126,7 @@ export default function Home() {
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>Tools</NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <ul className="w-[300px] gap-3 p-4">
+                    <ul className="w-[240px] gap-3 p-4">
                       {tools.map((tool) => (
                         <ListItem
                           key={tool.title}
