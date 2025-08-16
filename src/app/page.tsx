@@ -85,7 +85,7 @@ export default function Home() {
       </main>
       <footer className="border-t">
         <div className="container py-8 flex items-center justify-between">
-            <p className="text-sm text-muted-foreground">Built with Firebase Studio</p>
+            <p className="text-sm text-muted-foreground">Built by Codexign</p>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
                 <Link href="#" className="hover:text-primary transition-colors">Privacy Policy</Link>
                 <Link href="#" className="hover:text-primary transition-colors">Terms of Service</Link>
