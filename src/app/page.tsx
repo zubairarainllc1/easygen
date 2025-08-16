@@ -16,17 +16,17 @@ export default function Home() {
       <main className="flex-1">
         <section className="w-full py-20 md:py-32 lg:py-40 bg-background">
           <div className="container mx-auto px-4 md:px-6">
-            <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
-              <div className="flex flex-col justify-center space-y-4">
+            <div className="grid gap-6 lg:grid-cols-1">
+              <div className="flex flex-col justify-center space-y-4 text-center">
                 <div className="space-y-2">
                   <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none text-primary font-headline">
                     Create Professional Documents in Seconds
                   </h1>
-                  <p className="max-w-[600px] text-muted-foreground md:text-xl">
+                  <p className="max-w-[600px] mx-auto text-muted-foreground md:text-xl">
                     Our powerful tools help you generate beautiful invoices and CVs effortlessly. Focus on your work, we'll handle the paperwork.
                   </p>
                 </div>
-                <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                <div className="flex justify-center gap-2 min-[400px]:flex-row">
                   <Link href="/invoice" passHref>
                     <Button size="lg">
                       Get Started <ArrowRight className="ml-2" />
@@ -37,14 +37,6 @@ export default function Home() {
                   </Button>
                 </div>
               </div>
-              <img
-                src="https://placehold.co/600x400.png"
-                width="600"
-                height="400"
-                alt="Hero"
-                data-ai-hint="documents abstract"
-                className="mx-auto aspect-[3/2] overflow-hidden rounded-xl object-cover sm:w-full"
-              />
             </div>
           </div>
         </section>
