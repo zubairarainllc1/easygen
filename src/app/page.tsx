@@ -18,7 +18,7 @@ import {
   NavigationMenuContent,
   navigationMenuTriggerStyle
 } from "@/components/ui/navigation-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
 
 const tools = [
@@ -196,6 +196,9 @@ export default function Home() {
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="right">
+                  <SheetHeader>
+                    <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                  </SheetHeader>
                   <div className="flex flex-col gap-4 p-4">
                      <Link href="/" className="font-semibold hover:text-primary transition-colors">Home</Link>
                      <Link href="/blog" className="font-semibold hover:text-primary transition-colors">Blog</Link>
