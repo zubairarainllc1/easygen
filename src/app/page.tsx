@@ -107,11 +107,11 @@ export default function Home() {
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <Link href="/" className={navigationMenuTriggerStyle()}>
+                  <Link href="/" legacyBehavior passHref>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                       Home
-                    </Link>
-                  </NavigationMenuLink>
+                    </NavigationMenuLink>
+                  </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>Tools</NavigationMenuTrigger>
@@ -122,26 +122,24 @@ export default function Home() {
                           key={tool.title}
                           title={tool.title}
                           href={tool.href}
-                        >
-                          {tool.description}
-                        </ListItem>
+                        />
                       ))}
                     </ul>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
                  <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <Link href="/blog" className={navigationMenuTriggerStyle()}>
+                  <Link href="/blog" legacyBehavior passHref>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                       Blog
-                    </Link>
-                  </NavigationMenuLink>
+                    </NavigationMenuLink>
+                  </Link>
                 </NavigationMenuItem>
                  <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <Link href="/how-to" className={navigationMenuTriggerStyle()}>
+                  <Link href="/how-to" legacyBehavior passHref>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                       How To
-                    </Link>
-                  </NavigationMenuLink>
+                    </NavigationMenuLink>
+                  </Link>
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
@@ -207,7 +205,7 @@ export default function Home() {
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
   React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
+>(({ className, title, ...props }, ref) => {
   return (
     <li>
       <NavigationMenuLink asChild>
@@ -220,9 +218,6 @@ const ListItem = React.forwardRef<
           {...props}
         >
           <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
         </a>
       </NavigationMenuLink>
     </li>
