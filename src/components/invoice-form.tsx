@@ -1,13 +1,14 @@
+
 'use client';
 
 import React from 'react';
 import { format } from 'date-fns';
-import { Calendar as CalendarIcon, Download, Plus, Trash2 } from 'lucide-react';
+import { Calendar as CalendarIcon, Plus, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Invoice, InvoiceItem } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -17,10 +18,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 interface InvoiceFormProps {
   invoice: Invoice;
   setInvoice: (invoice: Invoice) => void;
-  onGeneratePDF: () => void;
 }
 
-export default function InvoiceForm({ invoice, setInvoice, onGeneratePDF }: InvoiceFormProps) {
+export default function InvoiceForm({ invoice, setInvoice }: InvoiceFormProps) {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setInvoice({ ...invoice, [name]: value });
@@ -147,12 +147,6 @@ export default function InvoiceForm({ invoice, setInvoice, onGeneratePDF }: Invo
             <Textarea id="notes" name="notes" placeholder="Any additional information..." value={invoice.notes} onChange={handleInputChange} />
         </div>
       </CardContent>
-      <CardFooter>
-        <Button onClick={onGeneratePDF} className="w-full bg-accent text-accent-foreground hover:bg-accent/90 transition-colors">
-            <Download className="mr-2 h-4 w-4" />
-            Generate Invoice
-        </Button>
-      </CardFooter>
     </Card>
   );
 }
