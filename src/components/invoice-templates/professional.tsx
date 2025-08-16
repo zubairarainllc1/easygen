@@ -8,10 +8,15 @@ import { format } from 'date-fns';
 
 const primaryColor = 'hsl(var(--primary-invoice))';
 
+const majorCurrencies = ['USD', 'EUR', 'GBP', 'JPY'];
+
 const formatCurrency = (amount: number, currency: string) => {
+  const isMajor = majorCurrencies.includes(currency);
   return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: currency,
+    style: isMajor ? 'currency' : 'decimal',
+    currency: isMajor ? currency : undefined,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   }).format(amount);
 };
 
@@ -26,6 +31,7 @@ export default function ProfessionalInvoice({ invoice, isQuotation = false, vali
   const taxAmount = subtotal * (invoice.taxRate / 100);
   const total = subtotal + taxAmount;
   const docType = isQuotation ? "QUOTATION" : "INVOICE";
+  const currencySuffix = majorCurrencies.includes(invoice.currency) ? '' : ` (${invoice.currency})`;
 
   return (
     <div className="p-10 bg-card text-card-foreground rounded-lg font-sans">
@@ -68,8 +74,8 @@ export default function ProfessionalInvoice({ invoice, isQuotation = false, vali
             <TableRow style={{backgroundColor: primaryColor}}>
               <TableHead className="w-[50%] text-white">Item</TableHead>
               <TableHead className="text-center text-white">QTY</TableHead>
-              <TableHead className="text-right text-white">Price</TableHead>
-              <TableHead className="text-right text-white">Total</TableHead>
+              <TableHead className="text-right text-white">Price{currencySuffix}</TableHead>
+              <TableHead className="text-right text-white">Total{currencySuffix}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

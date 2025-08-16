@@ -9,10 +9,15 @@ import { format } from 'date-fns';
 const primaryColor = 'hsl(var(--primary-invoice))';
 const primaryColorLight = 'hsla(var(--primary-invoice), 0.1)';
 
+const majorCurrencies = ['USD', 'EUR', 'GBP', 'JPY'];
+
 const formatCurrency = (amount: number, currency: string) => {
+  const isMajor = majorCurrencies.includes(currency);
   return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: currency,
+    style: isMajor ? 'currency' : 'decimal',
+    currency: isMajor ? currency : undefined,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   }).format(amount);
 };
 
@@ -30,6 +35,7 @@ export default function ModernInvoice({ invoice, isQuotation = false, validUntil
   const docNumberLabel = isQuotation ? "Quotation No." : "Invoice No.";
   const dateLabel = isQuotation ? "Date of Issue" : "Date of Issue";
   const billedToLabel = isQuotation ? "Quote To" : "Billed To";
+  const currencySuffix = majorCurrencies.includes(invoice.currency) ? '' : ` (${invoice.currency})`;
 
   return (
     <div className="p-10 bg-card text-card-foreground rounded-lg font-sans">
@@ -77,8 +83,8 @@ export default function ModernInvoice({ invoice, isQuotation = false, validUntil
             <TableRow className="border-b" style={{borderColor: primaryColor}}>
               <TableHead className="w-[50%] font-bold text-base" style={{color: primaryColor}}>Description</TableHead>
               <TableHead className="text-center font-bold text-base" style={{color: primaryColor}}>Qty</TableHead>
-              <TableHead className="text-right font-bold text-base" style={{color: primaryColor}}>Unit Price</TableHead>
-              <TableHead className="text-right font-bold text-base" style={{color: primaryColor}}>Amount</TableHead>
+              <TableHead className="text-right font-bold text-base" style={{color: primaryColor}}>Unit Price{currencySuffix}</TableHead>
+              <TableHead className="text-right font-bold text-base" style={{color: primaryColor}}>Amount{currencySuffix}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
