@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Logo } from "@/components/logo";
-import { ArrowRight, FileSignature, FileText, MoveRight, FileJson, Contact, FileCheck2 } from "lucide-react";
+import { ArrowRight, FileSignature, FileText, MoveRight, FileJson, Contact, FileCheck2, QrCode } from "lucide-react";
 
 export default function Home() {
   return (
@@ -129,6 +129,24 @@ export default function Home() {
                    <CardContent className="p-8 pt-0">
                       <div className="flex items-center text-primary font-semibold">
                           Create a Contract <MoveRight className="ml-2 transition-transform group-hover:translate-x-1" />
+                      </div>
+                    </CardContent>
+                </Card>
+              </Link>
+              <Link href="/qr-code">
+                <Card className="h-full hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                  <CardHeader className="p-8">
+                    <div className="bg-primary/10 p-4 rounded-full inline-block mb-4 self-start">
+                       <QrCode className="h-8 w-8 text-primary" />
+                    </div>
+                    <CardTitle className="text-2xl">QR Code Generator</CardTitle>
+                    <CardDescription className="text-base">
+                      Generate QR codes for URLs, text, and more. Easily share and download your custom QR code.
+                    </CardDescription>
+                  </CardHeader>
+                   <CardContent className="p-8 pt-0">
+                      <div className="flex items-center text-primary font-semibold">
+                          Generate QR Code <MoveRight className="ml-2 transition-transform group-hover:translate-x-1" />
                       </div>
                     </CardContent>
                 </Card>
