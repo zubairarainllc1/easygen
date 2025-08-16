@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -14,24 +14,33 @@ import { Slider } from "@/components/ui/slider";
 export default function QrCodeGeneratorPage() {
   const [data, setData] = useState("https://www.example.com");
   const [size, setSize] = useState([250]);
-  const [qrCodeUrl, setQrCodeUrl] = useState(`https://api.qrserver.com/v1/create-qr-code/?data=https://www.example.com&size=250x250`);
+  const [color, setColor] = useState("#000000");
+  const [bgColor, setBgColor] = useState("#ffffff");
+  const [qrCodeUrl, setQrCodeUrl] = useState("");
   const { toast } = useToast();
 
-  const handleGenerate = () => {
+  const generateQrCode = () => {
     if (!data.trim()) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Please enter some data to generate a QR code.",
-      });
+      setQrCodeUrl("");
       return;
     }
     const encodedData = encodeURIComponent(data);
-    const newUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodedData}&size=${size[0]}x${size[0]}`;
+    const colorHex = color.substring(1); // remove #
+    const bgColorHex = bgColor.substring(1); // remove #
+    const newUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodedData}&size=${size[0]}x${size[0]}&color=${colorHex}&bgcolor=${bgColorHex}`;
     setQrCodeUrl(newUrl);
   };
   
+  useEffect(() => {
+    generateQrCode();
+  }, [data, size, color, bgColor]);
+
+
   const handleDownload = async () => {
+    if(!qrCodeUrl) {
+       toast({ variant: "destructive", title: "Error", description: "Please generate a QR code first." });
+       return;
+    }
     try {
         const response = await fetch(qrCodeUrl);
         const blob = await response.blob();
@@ -65,7 +74,7 @@ export default function QrCodeGeneratorPage() {
                     Create your own QR codes for free. Enter any text or URL below.
                 </p>
             </div>
-            <div className="mx-auto max-w-2xl grid md:grid-cols-2 gap-8">
+            <div className="mx-auto max-w-4xl grid md:grid-cols-2 gap-8">
                 <div className="space-y-6">
                     <Card>
                         <CardHeader>
@@ -92,7 +101,17 @@ export default function QrCodeGeneratorPage() {
                                     onValueChange={setSize}
                                 />
                             </div>
-                            <Button className="w-full" onClick={handleGenerate}>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="color">QR Color</Label>
+                                    <Input id="color" type="color" value={color} onChange={(e) => setColor(e.target.value)} className="w-full h-10 p-1"/>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="bgColor">Background Color</Label>
+                                    <Input id="bgColor" type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)} className="w-full h-10 p-1"/>
+                                </div>
+                            </div>
+                            <Button className="w-full" onClick={generateQrCode}>
                                 <RefreshCw className="mr-2"/> Generate
                             </Button>
                         </CardContent>
@@ -102,20 +121,18 @@ export default function QrCodeGeneratorPage() {
                     <Card>
                         <CardHeader>
                             <CardTitle>Preview</CardTitle>
-                            <CardDescription>This is your generated QR code.</CardDescription>
+                            <CardDescription>Your QR code will update automatically.</CardDescription>
                         </CardHeader>
                         <CardContent className="flex flex-col items-center justify-center p-6 min-h-[250px]">
                             {qrCodeUrl ? (
                                 <img 
                                     src={qrCodeUrl} 
                                     alt="Generated QR Code" 
-                                    width={size[0]} 
-                                    height={size[0]} 
                                     className="border-4 border-white rounded-lg shadow-md"
                                 />
                             ) : (
-                                <div className="w-[250px] h-[250px] bg-gray-200 flex items-center justify-center text-muted-foreground rounded-lg">
-                                    Your QR code will appear here
+                                <div className="w-[250px] h-[250px] bg-gray-200 flex items-center justify-center text-muted-foreground rounded-lg text-center p-4">
+                                    Your QR code will appear here. Start by typing in the data field.
                                 </div>
                             )}
                         </CardContent>
