@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { useState, useRef } from "react";
@@ -92,7 +93,7 @@ export default function InvoicePage() {
             />
           </div>
 
-          <div className="mx-4">
+          <div className={cn("mx-4", isPreviewVisible ? 'block' : 'hidden')}>
               <Separator orientation="vertical" />
           </div>
           
@@ -108,8 +109,8 @@ export default function InvoicePage() {
 
           <div 
             className={cn(
-                "lg:w-3/5 transition-all duration-500 ease-in-out sticky top-8",
-                isPreviewVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full absolute w-full'
+                "lg:w-3/5 transition-all duration-500 ease-in-out sticky top-8 h-fit",
+                isPreviewVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full absolute w-full'
             )}
             style={{ transformOrigin: 'right center' }}
           >
