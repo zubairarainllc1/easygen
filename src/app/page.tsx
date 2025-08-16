@@ -77,11 +77,11 @@ const howToSteps = [
         title: "How to use Invoice Maker",
         description: "Our Invoice Maker helps you create professional, branded invoices in just a few clicks. It's designed to be intuitive and fast, allowing you to bill clients accurately without the hassle. You can customize templates, add your company logo, and define items with specific quantities and prices. The tool automatically calculates subtotals, taxes, and grand totals, ensuring your invoices are always error-free.",
         steps: [
-            "1. Start by selecting a professional template that fits your brand identity.",
-            "2. Fill in your company details and the client's information.",
-            "3. Add line items for your products or services, including quantity and price.",
-            "4. Customize the tax rate and add any specific notes for the client.",
-            "5. Preview your invoice and download it as a high-quality PDF or PNG."
+            "Start by selecting a professional template that fits your brand identity.",
+            "Fill in your company details and the client's information.",
+            "Add line items for your products or services, including quantity and price.",
+            "Customize the tax rate and add any specific notes for the client.",
+            "Preview your invoice and download it as a high-quality PDF or PNG."
         ],
         imageUrl: "https://i.postimg.cc/rF8h9HK6/Invoice-rafiki.png"
     },
@@ -89,11 +89,11 @@ const howToSteps = [
         title: "How to use CV Maker",
         description: "Build a compelling, well-structured CV that highlights your skills and experience. Our CV Maker guides you through each section, from personal information to work history and education. Choose from a variety of modern and professional templates designed to impress recruiters. The tool ensures your final document is perfectly formatted and ready to be sent out for job applications.",
         steps: [
-            "1. Choose a CV template that best represents your professional profile.",
-            "2. Enter your personal details, including your name, contact information, and a professional summary.",
-            "3. List your work experience, detailing your roles, responsibilities, and achievements.",
-            "4. Add your educational background and list your key skills.",
-            "5. Download your polished CV and start applying for jobs with confidence."
+            "Choose a CV template that best represents your professional profile.",
+            "Enter your personal details, including your name, contact information, and a professional summary.",
+            "List your work experience, detailing your roles, responsibilities, and achievements.",
+            "Add your educational background and list your key skills.",
+            "Download your polished CV and start applying for jobs with confidence."
         ],
         imageUrl: "https://i.postimg.cc/GhhQDs5d/Resume-bro.png"
     },
@@ -101,11 +101,11 @@ const howToSteps = [
         title: "How to use Quotation Generator",
         description: "Create and send accurate, professional quotations to potential clients. This tool simplifies the process of pricing your services or products, allowing you to generate a detailed quote that can later be converted into an invoice. Set terms, define the validity period, and present your pricing clearly to win more business. This is perfect for freelancers, agencies, and small businesses.",
         steps: [
-            "1. Select a clean, professional template for your quotation.",
-            "2. Input your client's details and the quotation's validity period.",
-            "3. List all the items or services you are quoting with detailed descriptions and prices.",
-            "4. Review the auto-calculated totals to ensure accuracy.",
-            "5. Download the quotation to send to your client for approval."
+            "Select a clean, professional template for your quotation.",
+            "Input your client's details and the quotation's validity period.",
+            "List all the items or services you are quoting with detailed descriptions and prices.",
+            "Review the auto-calculated totals to ensure accuracy.",
+            "Download the quotation to send to your client for approval."
         ],
         imageUrl: "https://i.postimg.cc/R0rKg3X3/Quotation.png"
     },
@@ -113,11 +113,11 @@ const howToSteps = [
         title: "How to use Business Card Maker",
         description: "Design a memorable business card that makes a lasting impression. Our tool allows you to customize both the front and back of your card, ensuring all your essential contact information is beautifully presented. Choose from sleek, minimal, or bold designs, and add your own logo and brand colors to create a card that truly represents you and your business. Stand out from the crowd at your next networking event.",
         steps: [
-            "1. Select a design template and choose an accent color that matches your brand.",
-            "2. Add your name, title, company, and all contact details.",
-            "3. Upload your company logo for a personalized touch.",
-            "4. Customize both the front and back of the card in the editor.",
-            "5. Download the print-ready PDF to get your cards professionally printed."
+            "Select a design template and choose an accent color that matches your brand.",
+            "Add your name, title, company, and all contact details.",
+            "Upload your company logo for a personalized touch.",
+            "Customize both the front and back of the card in the editor.",
+            "Download the print-ready PDF to get your cards professionally printed."
         ],
         imageUrl: "https://i.postimg.cc/Rh30rd0v/card.png"
     },
@@ -125,11 +125,11 @@ const howToSteps = [
         title: "How to use Contract Generator",
         description: "Drafting a contract can be complicated, but our tool makes it easy. Create legally-sound agreements by simply filling in the blanks. Define the scope of work, set payment terms, and outline the terms and conditions to protect both you and your client. This tool is essential for ensuring clear communication and preventing disputes down the line. It's professional, secure, and straightforward.",
         steps: [
-            "1. Choose from our range of contract templates (formal, modern, or simple).",
-            "2. Fill in the names of the client and the contractor.",
-            "3. Clearly define the scope of work, deliverables, and project timeline.",
-            "4. Specify the payment terms, including amounts and due dates.",
-            "5. Outline the general terms and conditions before downloading the final document."
+            "Choose from our range of contract templates (formal, modern, or simple).",
+            "Fill in the names of the client and the contractor.",
+            "Clearly define the scope of work, deliverables, and project timeline.",
+            "Specify the payment terms, including amounts and due dates.",
+            "Outline the general terms and conditions before downloading the final document."
         ],
         imageUrl: "https://i.postimg.cc/pLjn5WRP/Agreement-rafiki.png"
     },
@@ -137,11 +137,11 @@ const howToSteps = [
         title: "How to use QR Code Generator",
         description: "Instantly create custom QR codes for websites, text, contact information, and more. Our generator is simple to use and allows you to customize the size and color to fit your needs. QR codes are perfect for marketing materials, event flyers, or business cards, providing a quick and easy way for people to access your information. Download your high-quality QR code in seconds.",
         steps: [
-            "1. Enter the URL or text you want the QR code to link to.",
-            "2. Customize the size of the QR code using the slider.",
-            "3. Choose the color for the QR code and its background.",
-            "4. Your QR code will be generated in the preview window.",
-            "5. Download the high-resolution PNG file for your use."
+            "Enter the URL or text you want the QR code to link to.",
+            "Customize the size of the QR code using the slider.",
+            "Choose the color for the QR code and its background.",
+            "Your QR code will be generated in the preview window.",
+            "Download the high-resolution PNG file for your use."
         ],
         imageUrl: "https://i.postimg.cc/rw5KFfNm/QR-Code-amico.png"
     }
@@ -222,7 +222,7 @@ export default function Home() {
     }, [filter]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-background overflow-x-hidden">
+    <div className="flex flex-col min-h-screen bg-background">
       <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container h-16 flex items-center justify-between">
             <Logo />
@@ -354,7 +354,7 @@ export default function Home() {
                                       <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold text-sm flex-shrink-0 mt-1">
                                         {i + 1}
                                       </span>
-                                      <span className="text-muted-foreground">{s.substring(s.indexOf('.') + 2)}</span>
+                                      <span className="text-muted-foreground">{s}</span>
                                     </li>
                                   ))}
                                 </ul>
@@ -415,4 +415,5 @@ ListItem.displayName = "ListItem"
     
 
     
+
 
