@@ -12,15 +12,19 @@ import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
-import { Download, Eye, Menu } from "lucide-react";
+import { Download, Eye, Menu, Pencil, BookOpen } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Link from "next/link";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 
 function CoverLetterEditorPageContent() {
   const searchParams = useSearchParams();
   const { toast } = useToast();
   const pdfRef = useRef<HTMLDivElement>(null);
-  const [isPreviewVisible, setIsPreviewVisible] = useState(true);
+  const [viewMode, setViewMode] = useState<'edit' | 'preview'>('edit');
+  const [isMobile, setIsMobile] = useState(false);
   
   const [template, setTemplate] = useState<"classic" | "modern" | "simple">("classic");
   const [primaryColor, setPrimaryColor] = useState("221 83% 53%");
@@ -43,10 +47,10 @@ function CoverLetterEditorPageContent() {
 
   useEffect(() => {
     const handleResize = () => {
-        if (window.innerWidth < 1024) {
-            setIsPreviewVisible(false);
-        } else {
-            setIsPreviewVisible(true);
+        const mobile = window.innerWidth < 1024;
+        setIsMobile(mobile);
+        if (!mobile) {
+            setViewMode('edit');
         }
     };
     handleResize();
@@ -109,8 +113,8 @@ function CoverLetterEditorPageContent() {
   };
 
   const handleGeneratePDF = () => {
-    if (!isPreviewVisible) {
-      setIsPreviewVisible(true);
+    if (isMobile && viewMode !== 'preview') {
+      setViewMode('preview');
       toast({ title: "Preview opened", description: "The preview is now visible for PDF generation." });
 
       setTimeout(() => {
@@ -136,6 +140,31 @@ function CoverLetterEditorPageContent() {
     }
   };
 
+  const editorAndPreview = (
+    <div className="lg:grid lg:grid-cols-12 lg:gap-8">
+        <div className={cn("lg:col-span-5 mb-8 lg:mb-0", isMobile && viewMode === 'preview' && "hidden")}>
+            <CoverLetterForm coverLetterData={coverLetterData} setCoverLetterData={setCoverLetterData} withProfileImage={withProfileImage} />
+        </div>
+
+        <div className={cn("lg:col-span-7 lg:sticky lg:top-24 h-fit", isMobile && viewMode === 'edit' && "hidden")}>
+            <Card className="shadow-lg">
+                <div ref={pdfRef} className="bg-card printable-content">
+                <CoverLetterPreview data={coverLetterData} template={template} primaryColor={primaryColor} />
+                </div>
+                <div className="p-4 bg-muted/30 border-t flex flex-wrap justify-end gap-2">
+                <Button variant="outline" onClick={handlePreview}>
+                    <Eye />
+                    Full Screen
+                </Button>
+                <Button onClick={handleGeneratePDF}>
+                    <Download />
+                    Download
+                </Button>
+                </div>
+            </Card>
+        </div>
+    </div>
+  )
 
   return (
     <main className="min-h-screen bg-muted/50">
@@ -161,36 +190,40 @@ function CoverLetterEditorPageContent() {
         </div>
       </header>
       <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-        <div className="lg:grid lg:grid-cols-12 lg:gap-8">
-          <div className="lg:col-span-5 mb-8 lg:mb-0">
-            <CoverLetterForm coverLetterData={coverLetterData} setCoverLetterData={setCoverLetterData} withProfileImage={withProfileImage} />
-          </div>
-
-          <div className="lg:col-span-7 lg:sticky lg:top-24 h-fit">
-            <div className="flex justify-end mb-4 lg:hidden">
-                <Button variant={isPreviewVisible ? "secondary" : "default"} onClick={() => setIsPreviewVisible(!isPreviewVisible)}>
-                    {isPreviewVisible ? "Hide Preview" : "Show Preview"}
-                </Button>
-             </div>
-             {isPreviewVisible && (
-                <Card className="shadow-lg">
-                  <div ref={pdfRef} className="bg-card printable-content">
-                    <CoverLetterPreview data={coverLetterData} template={template} primaryColor={primaryColor} />
-                  </div>
-                  <div className="p-4 bg-muted/30 border-t flex flex-wrap justify-end gap-2">
-                    <Button variant="outline" onClick={handlePreview}>
-                      <Eye />
-                      Preview
-                    </Button>
-                    <Button onClick={handleGeneratePDF}>
-                      <Download />
-                      Download
-                    </Button>
-                  </div>
-                </Card>
-            )}
-          </div>
+        {isMobile && (
+            <div className="flex items-center justify-center space-x-2 mb-6 p-4 border rounded-lg bg-background">
+                <Pencil className={cn("h-5 w-5", viewMode === 'edit' ? "text-primary" : "text-muted-foreground")} />
+                <Label htmlFor="view-mode-switch" className={cn(viewMode === 'edit' && "text-primary")}>Edit</Label>
+                <Switch 
+                    id="view-mode-switch" 
+                    checked={viewMode === 'preview'} 
+                    onCheckedChange={(checked) => setViewMode(checked ? 'preview' : 'edit')}
+                />
+                <Label htmlFor="view-mode-switch" className={cn(viewMode === 'preview' && "text-primary")}>Preview</Label>
+                <BookOpen className={cn("h-5 w-5", viewMode === 'preview' ? "text-primary" : "text-muted-foreground")}/>
+            </div>
+        )}
+        
+        <div className="relative perspective-1000">
+            <div className={cn("transition-transform duration-700 ease-in-out", isMobile && "transform-style-3d", isMobile && viewMode === 'preview' ? 'rotate-y-180' : 'rotate-y-0' )}>
+                <div className={cn(isMobile && "backface-hidden")}>
+                    {editorAndPreview}
+                </div>
+                {isMobile && (
+                    <div className="absolute top-0 left-0 w-full h-full backface-hidden rotate-y-180">
+                         {editorAndPreview}
+                    </div>
+                )}
+            </div>
         </div>
+
+        <style jsx global>{`
+          .transform-style-3d { transform-style: preserve-3d; }
+          .perspective-1000 { perspective: 1000px; }
+          .rotate-y-0 { transform: rotateY(0deg); }
+          .rotate-y-180 { transform: rotateY(180deg); }
+          .backface-hidden { backface-visibility: hidden; }
+        `}</style>
       </div>
     </main>
   );
@@ -204,3 +237,5 @@ export default function CoverLetterEditorPage() {
     </Suspense>
   )
 }
+
+    

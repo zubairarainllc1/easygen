@@ -12,9 +12,12 @@ import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
-import { Download, Eye, FlipHorizontal, Menu } from "lucide-react";
+import { Download, Eye, FlipHorizontal, Menu, Pencil, BookOpen } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Link from "next/link";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 
 function BusinessCardEditorContent() {
   const searchParams = useSearchParams();
@@ -22,6 +25,8 @@ function BusinessCardEditorContent() {
   const frontRef = useRef<HTMLDivElement>(null);
   const backRef = useRef<HTMLDivElement>(null);
   const [isBack, setIsBack] = useState(false);
+  const [viewMode, setViewMode] = useState<'edit' | 'preview'>('edit');
+  const [isMobile, setIsMobile] = useState(false);
 
   const [template, setTemplate] = useState<"sleek" | "minimal" | "bold">("sleek");
   const [withLogo, setWithLogo] = useState(true);
@@ -60,6 +65,19 @@ function BusinessCardEditorContent() {
        setCardData(prev => ({...prev, logoUrl: ""}));
     }
   }, [withLogo]);
+
+  useEffect(() => {
+    const handleResize = () => {
+        const mobile = window.innerWidth < 1024;
+        setIsMobile(mobile);
+        if (!mobile) {
+            setViewMode('edit');
+        }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
 
   const generatePdf = async () => {
@@ -108,6 +126,34 @@ function BusinessCardEditorContent() {
     }
   };
 
+  const editorAndPreview = (
+    <div className="lg:grid lg:grid-cols-2 gap-8">
+        <div className={cn("mb-8 lg:mb-0", isMobile && viewMode === 'preview' && "hidden")}>
+            <BusinessCardForm cardData={cardData} setCardData={setCardData} withLogo={withLogo}/>
+        </div>
+        <div className={cn("space-y-4 lg:sticky lg:top-24 h-fit", isMobile && viewMode === 'edit' && "hidden")}>
+        <h2 className="text-xl font-semibold text-center">Preview</h2>
+        <div className="flex justify-center">
+                <BusinessCardPreview cardData={cardData} frontRef={frontRef} backRef={backRef} isBack={isBack} template={template} />
+        </div>
+        <div className="p-4 bg-muted/30 border-t flex flex-wrap justify-center gap-2 rounded-b-lg">
+            <Button variant="outline" onClick={() => setIsBack(!isBack)}>
+                <FlipHorizontal />
+                {isBack ? "Show Front" : "Show Back"}
+            </Button>
+                <Button variant="outline" onClick={handlePreview}>
+                <Eye />
+                Full Screen
+            </Button>
+            <Button onClick={generatePdf}>
+                <Download />
+                Download
+            </Button>
+        </div>
+        </div>
+    </div>
+  )
+
   return (
     <main className="min-h-screen bg-muted/50">
       <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -132,31 +178,40 @@ function BusinessCardEditorContent() {
         </div>
       </header>
       <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-        <div className="grid lg:grid-cols-2 gap-8">
-          <div className="mb-8 lg:mb-0">
-            <BusinessCardForm cardData={cardData} setCardData={setCardData} withLogo={withLogo}/>
-          </div>
-          <div className="space-y-4 lg:sticky lg:top-24 h-fit">
-            <h2 className="text-xl font-semibold text-center">Preview</h2>
-            <div className="flex justify-center">
-                 <BusinessCardPreview cardData={cardData} frontRef={frontRef} backRef={backRef} isBack={isBack} template={template} />
+        {isMobile && (
+            <div className="flex items-center justify-center space-x-2 mb-6 p-4 border rounded-lg bg-background">
+                <Pencil className={cn("h-5 w-5", viewMode === 'edit' ? "text-primary" : "text-muted-foreground")} />
+                <Label htmlFor="view-mode-switch" className={cn(viewMode === 'edit' && "text-primary")}>Edit</Label>
+                <Switch 
+                    id="view-mode-switch" 
+                    checked={viewMode === 'preview'} 
+                    onCheckedChange={(checked) => setViewMode(checked ? 'preview' : 'edit')}
+                />
+                <Label htmlFor="view-mode-switch" className={cn(viewMode === 'preview' && "text-primary")}>Preview</Label>
+                <BookOpen className={cn("h-5 w-5", viewMode === 'preview' ? "text-primary" : "text-muted-foreground")}/>
             </div>
-            <div className="p-4 bg-muted/30 border-t flex flex-wrap justify-center gap-2 rounded-b-lg">
-                <Button variant="outline" onClick={() => setIsBack(!isBack)}>
-                    <FlipHorizontal />
-                    {isBack ? "Show Front" : "Show Back"}
-                </Button>
-                 <Button variant="outline" onClick={handlePreview}>
-                  <Eye />
-                  Preview
-                </Button>
-                <Button onClick={generatePdf}>
-                    <Download />
-                    Download
-                </Button>
+        )}
+
+        <div className="relative perspective-1000">
+            <div className={cn("transition-transform duration-700 ease-in-out", isMobile && "transform-style-3d", isMobile && viewMode === 'preview' ? 'rotate-y-180' : 'rotate-y-0' )}>
+                <div className={cn(isMobile && "backface-hidden")}>
+                    {editorAndPreview}
+                </div>
+                {isMobile && (
+                    <div className="absolute top-0 left-0 w-full h-full backface-hidden rotate-y-180">
+                         {editorAndPreview}
+                    </div>
+                )}
             </div>
-          </div>
         </div>
+
+        <style jsx global>{`
+          .transform-style-3d { transform-style: preserve-3d; }
+          .perspective-1000 { perspective: 1000px; }
+          .rotate-y-0 { transform: rotateY(0deg); }
+          .rotate-y-180 { transform: rotateY(180deg); }
+          .backface-hidden { backface-visibility: hidden; }
+        `}</style>
       </div>
     </main>
   );
@@ -169,3 +224,5 @@ export default function BusinessCardEditorPage() {
         </Suspense>
     )
 }
+
+    
