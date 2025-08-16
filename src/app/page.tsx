@@ -195,7 +195,7 @@ export default function Home() {
                     <span className="sr-only">Open navigation menu</span>
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="right">
+                <SheetContent side="right" className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                   <div className="flex flex-col gap-4 p-4">
                      <Link href="/" className="font-semibold hover:text-primary transition-colors">Home</Link>
                      <Link href="/blog" className="font-semibold hover:text-primary transition-colors">Blog</Link>
@@ -295,3 +295,5 @@ const ListItem = React.forwardRef<
   )
 })
 ListItem.displayName = "ListItem"
+
+    
