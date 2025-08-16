@@ -192,7 +192,7 @@ export default function Home() {
             <div className="flex flex-col items-center space-y-6 text-center">
                 <div className="space-y-4">
                   <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl font-sans p-4 text-gray-900">
-                    Create Professional <TypingAnimation />
+                    Create Professional <span className="text-primary"><TypingAnimation /></span>
                   </h1>
                   <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
                     Our powerful tools help you generate beautiful invoices, CVs, and more. Focus on your work, we'll handle the paperwork.
