@@ -6,7 +6,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Logo } from "@/components/logo";
-import { ArrowRight, FileSignature, FileText, MoveRight, FileJson, Contact, FileCheck2, QrCode, Menu } from "lucide-react";
+import { ArrowRight, FileSignature, FileText, MoveRight, FileJson, Contact, FileCheck2, QrCode, Menu, FileBadge } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import {
@@ -36,6 +36,14 @@ const tools = [
     title: "CV Maker",
     description: "Build a standout CV with our easy-to-use builder. Choose from professional templates and highlight your skills.",
     cta: "Build Your CV",
+    category: "document"
+  },
+  {
+    href: "/cover-letter",
+    icon: <FileBadge className="h-8 w-8 text-primary" />,
+    title: "Cover Letter Generator",
+    description: "Create a compelling cover letter that impresses recruiters. Choose from professional templates.",
+    cta: "Create Letter",
     category: "document"
   },
   {
@@ -96,6 +104,18 @@ const howToSteps = [
             "Download your polished CV and start applying for jobs with confidence."
         ],
         imageUrl: "https://i.postimg.cc/GhhQDs5d/Resume-bro.png"
+    },
+     {
+        title: "How to use Cover Letter Generator",
+        description: "Craft a professional cover letter that stands out to hiring managers. Our generator helps you structure your letter perfectly, from your personal details to the closing sign-off. Choose a template that matches your CV, fill in the recipient's information, and write a compelling message that showcases your suitability for the role. Make a great first impression and land more interviews.",
+        steps: [
+            "Select a cover letter template that complements your professional style.",
+            "Fill in your contact information and the recipient's details.",
+            "Write a clear subject line and a persuasive body for your letter.",
+            "Choose a professional closing and review your letter for any errors.",
+            "Download the final document, ready to be sent with your job application."
+        ],
+        imageUrl: "https://i.postimg.cc/fWtKf07N/Recommendation-letter-amico.png"
     },
     {
         title: "How to use Quotation Generator",
@@ -332,7 +352,7 @@ export default function Home() {
                     </TabsList>
                 </Tabs>
             </div>
-            <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 py-12 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 py-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {filteredTools.map((tool) => <ToolCard key={tool.href} tool={tool} />)}
             </div>
           </div>
