@@ -303,9 +303,9 @@ export default function Home() {
                 </div>
                 <div className="space-y-4 pt-4">
                     <Link href="#tools">
-                       <button className="h-11 rounded-md px-8 text-base font-medium text-primary-foreground btn-frost transition-all duration-300">
+                       <Button size="lg">
                         Explore Tools
-                       </button>
+                       </Button>
                     </Link>
                 </div>
             </div>
@@ -412,11 +412,3 @@ const ListItem = React.forwardRef<
   )
 })
 ListItem.displayName = "ListItem"
-
-    
-    
-
-    
-
-
-
