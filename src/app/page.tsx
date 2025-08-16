@@ -163,9 +163,6 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="space-y-4 pt-4">
-                    <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-sans p-4 animate-gradient">
-                        100% Free
-                    </h2>
                      <Link href="#tools" className="inline-block">
                        <div className="btn-gradient-border rounded-lg">
                            <Button size="lg" className="w-full">Explore Tools</Button>
