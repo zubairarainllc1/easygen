@@ -44,14 +44,9 @@ function CvEditorPageContent() {
     }
     if (colorParam) {
       setPrimaryColor(colorParam);
-      document.documentElement.style.setProperty('--primary', colorParam);
     } else {
-        document.documentElement.style.setProperty('--primary', "221 83% 53%");
+        setPrimaryColor("221 83% 53%");
     }
-     // Cleanup function to reset the color when the component unmounts
-    return () => {
-      document.documentElement.style.removeProperty('--primary');
-    };
   }, [searchParams]);
 
   const [cvData, setCvData] = useState<CvData>({
@@ -182,7 +177,7 @@ function CvEditorPageContent() {
           >
             <Card className="shadow-lg">
               <div ref={pdfRef} className="bg-card printable-content">
-                <CvPreview cvData={cvData} template={template} />
+                <CvPreview cvData={cvData} template={template} primaryColor={primaryColor} />
               </div>
               <div className="p-4 bg-muted/30 border-t flex justify-end gap-2">
                  <DropdownMenu>

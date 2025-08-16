@@ -2,6 +2,8 @@
 import type { CvData } from "@/lib/types";
 import { Mail, Phone, Home, Globe } from "lucide-react";
 
+const primaryText = 'hsl(var(--primary-cv))';
+
 export default function ClassicTemplate({ cvData }: { cvData: CvData }) {
   return (
     <div className="p-8 font-serif bg-white text-gray-800">
@@ -14,17 +16,17 @@ export default function ClassicTemplate({ cvData }: { cvData: CvData }) {
           {cvData.personalInfo.name}
         </h1>
         <div className="flex justify-center items-center gap-x-6 gap-y-2 text-sm mt-4 flex-wrap">
-          <a href={`mailto:${cvData.personalInfo.email}`} className="flex items-center gap-2 hover:text-primary">
+          <a href={`mailto:${cvData.personalInfo.email}`} className="flex items-center gap-2 hover:text-[--primary-cv]" style={{ color: 'inherit' }}>
             <Mail size={14} /> {cvData.personalInfo.email}
           </a>
-          <a href={`tel:${cvData.personalInfo.phone}`} className="flex items-center gap-2 hover:text-primary">
+          <a href={`tel:${cvData.personalInfo.phone}`} className="flex items-center gap-2 hover:text-[--primary-cv]" style={{ color: 'inherit' }}>
             <Phone size={14} /> {cvData.personalInfo.phone}
           </a>
           <p className="flex items-center gap-2">
             <Home size={14} /> {cvData.personalInfo.address}
           </p>
           {cvData.personalInfo.website && (
-            <a href={cvData.personalInfo.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary">
+            <a href={cvData.personalInfo.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-[--primary-cv]" style={{ color: 'inherit' }}>
               <Globe size={14} /> {cvData.personalInfo.website}
             </a>
           )}

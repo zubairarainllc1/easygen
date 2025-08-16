@@ -18,7 +18,7 @@ export default function MinimalistTemplate({ cvData }: { cvData: CvData }) {
           {cvData.personalInfo.website && (
             <>
                 <span>&middot;</span>
-                <a href={cvData.personalInfo.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                <a href={cvData.personalInfo.website} target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: 'hsl(var(--primary-cv))' }}>
                     {cvData.personalInfo.website}
                 </a>
             </>

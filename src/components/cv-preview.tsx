@@ -11,9 +11,10 @@ import ProfessionalTemplate from './cv-templates/professional';
 interface CvPreviewProps {
     cvData: CvData;
     template: 'classic' | 'modern' | 'minimalist' | 'creative' | 'professional';
+    primaryColor: string;
 }
 
-export default function CvPreview({ cvData, template }: CvPreviewProps) {
+export default function CvPreview({ cvData, template, primaryColor }: CvPreviewProps) {
   const templates = {
     classic: ClassicTemplate,
     modern: ModernTemplate,
@@ -23,9 +24,13 @@ export default function CvPreview({ cvData, template }: CvPreviewProps) {
   };
 
   const SelectedTemplate = templates[template] || ClassicTemplate;
+  
+  const cvStyle = {
+    '--primary-cv': primaryColor
+  } as React.CSSProperties;
 
   return (
-    <div className="p-0 bg-card text-card-foreground rounded-lg">
+    <div className="p-0 bg-card text-card-foreground rounded-lg" style={cvStyle}>
       <SelectedTemplate cvData={cvData} />
     </div>
   );
