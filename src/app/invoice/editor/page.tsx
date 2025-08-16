@@ -159,7 +159,7 @@ function InvoiceEditorPageContent() {
 
   return (
     <main className="min-h-screen bg-muted/50">
-       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+       <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container h-14 flex items-center">
             <Logo />
         </div>

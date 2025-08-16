@@ -4,7 +4,7 @@ import { Logo } from "@/components/logo";
 export default function BlogPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container h-14 flex items-center">
           <Logo />
         </div>
