@@ -303,7 +303,9 @@ export default function Home() {
                 </div>
                 <div className="space-y-4 pt-4">
                     <Link href="#tools">
-                       <Button size="lg">Explore Tools</Button>
+                       <button className="h-11 rounded-md px-8 text-base font-medium text-primary-foreground btn-frost transition-all duration-300">
+                        Explore Tools
+                       </button>
                     </Link>
                 </div>
             </div>
@@ -330,7 +332,7 @@ export default function Home() {
                     </TabsList>
                 </Tabs>
             </div>
-            <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 py-12 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 py-12 sm:grid-cols-2 lg:grid-cols-3">
               {filteredTools.map((tool) => <ToolCard key={tool.href} tool={tool} />)}
             </div>
           </div>
@@ -415,5 +417,6 @@ ListItem.displayName = "ListItem"
     
 
     
+
 
 

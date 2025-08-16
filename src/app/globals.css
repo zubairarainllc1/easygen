@@ -106,4 +106,13 @@
     border-right: .15em solid hsl(var(--primary));
     animation: blink-caret .75s step-end infinite;
   }
+  .btn-frost {
+    background-color: hsl(var(--primary) / 0.2);
+    backdrop-filter: blur(8px);
+    border: 1px solid hsl(var(--primary) / 0.3);
+  }
+  .btn-frost:hover {
+    background-color: hsl(var(--primary) / 0.3);
+    border-color: hsl(var(--primary) / 0.4);
+  }
 }
