@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -106,11 +107,11 @@ export default function Home() {
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                   <Link href="/" legacyBehavior passHref>
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  <NavigationMenuLink asChild>
+                    <Link href="/" className={navigationMenuTriggerStyle()}>
                       Home
-                    </NavigationMenuLink>
-                  </Link>
+                    </Link>
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>Tools</NavigationMenuTrigger>
@@ -129,18 +130,18 @@ export default function Home() {
                   </NavigationMenuContent>
                 </NavigationMenuItem>
                  <NavigationMenuItem>
-                  <Link href="/blog" legacyBehavior passHref>
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  <NavigationMenuLink asChild>
+                    <Link href="/blog" className={navigationMenuTriggerStyle()}>
                       Blog
-                    </NavigationMenuLink>
-                  </Link>
+                    </Link>
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
                  <NavigationMenuItem>
-                   <Link href="/how-to" legacyBehavior passHref>
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  <NavigationMenuLink asChild>
+                    <Link href="/how-to" className={navigationMenuTriggerStyle()}>
                       How To
-                    </NavigationMenuLink>
-                  </Link>
+                    </Link>
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
