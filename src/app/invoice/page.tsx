@@ -1,136 +1,113 @@
 
 "use client";
 
-import { useState, useRef } from "react";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
-import type { Invoice } from "@/lib/types";
-import InvoiceForm from "@/components/invoice-form";
-import InvoicePreview from "@/components/invoice-preview";
-import { Card } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
-import { Logo } from "@/components/logo";
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Download, Eye } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Logo } from "@/components/logo";
 import { cn } from "@/lib/utils";
+import { ArrowRight, CheckCircle2, Image as ImageIcon, ImageOff } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 
-export default function InvoicePage() {
-  const { toast } = useToast();
-  const pdfRef = useRef<HTMLDivElement>(null);
-  const [isPreviewVisible, setIsPreviewVisible] = useState(true);
+const templates = [
+  { id: "professional", name: "Professional" },
+  { id: "modern", name: "Modern" },
+  { id: "simple", name: "Simple" },
+];
 
-  const [invoice, setInvoice] = useState<Invoice>({
-    invoiceNumber: "INV-001",
-    date: new Date(),
-    clientName: "Acme Inc.",
-    clientEmail: "contact@acme.com",
-    clientAddress: "123 Main Street\nAnytown, USA 12345",
-    items: [
-      { id: "1", name: "Premium Website Hosting", quantity: 1, price: 120 },
-      { id: "2", name: "Domain Name Registration", quantity: 1, price: 15 },
-    ],
-    taxRate: 8.5,
-    notes: "Payment is due within 30 days. Thank you for your business!",
-  });
+const colors = [
+  { name: "Blue", value: "228 65% 33%" },
+  { name: "Green", value: "142 76% 36%" },
+  { name: "Orange", value: "25 95% 53%" },
+  { name: "Purple", value: "262 84% 59%" },
+  { name: "Teal", value: "173 80% 40%" },
+  { name: "Red", value: "0 72% 51%" },
+  { name: "Indigo", value: "231 48% 48%" },
+  { name: "Pink", value: "330 81% 54%" },
+  { name: "Gray", value: "220 9% 46%" },
+  { name: "Black", value: "0 0% 13%" },
+];
 
-  const handleGeneratePDF = () => {
-    if (!isPreviewVisible) {
-      setIsPreviewVisible(true);
-      toast({ title: "Preview opened", description: "The invoice preview is now visible for PDF generation." });
-      
-      setTimeout(() => {
-        generatePdfFromRef(pdfRef.current);
-      }, 500);
-      return;
-    }
-    generatePdfFromRef(pdfRef.current);
+export default function InvoiceTemplatePage() {
+  const router = useRouter();
+  const [selectedTemplate, setSelectedTemplate] = useState(templates[0].id);
+  const [selectedColor, setSelectedColor] = useState(colors[0].value);
+  const [withCompanyLogo, setWithCompanyLogo] = useState(true);
+
+  const handleNext = () => {
+    const params = new URLSearchParams();
+    params.set("template", selectedTemplate);
+    params.set("color", selectedColor);
+    params.set("withCompanyLogo", String(withCompanyLogo));
+    router.push(`/invoice/editor?${params.toString()}`);
   };
-  
-  const generatePdfFromRef = (input: HTMLDivElement | null) => {
-    if (input) {
-      toast({ title: "Generating PDF...", description: "Please wait a moment." });
-      html2canvas(input, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: "white",
-      })
-        .then((canvas) => {
-          const imgData = canvas.toDataURL("image/png");
-          const pdf = new jsPDF("p", "mm", "a4");
-          const pdfWidth = pdf.internal.pageSize.getWidth();
-          const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-          pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-          pdf.save(`invoice-${invoice.invoiceNumber || "draft"}.pdf`);
-          toast({ title: "Success!", description: "Your invoice has been downloaded." });
-        })
-        .catch((err) => {
-          toast({ variant: "destructive", title: "Error", description: "Failed to generate PDF." });
-          console.error(err);
-        });
-    }
-  }
-
-  const handlePreview = () => {
-     setIsPreviewVisible(true);
-     toast({ title: "Preview Shown", description: "The invoice preview is now visible." });
-  }
 
   return (
-    <main className="min-h-screen bg-muted/50">
-       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <div className="min-h-screen bg-muted/50">
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container h-14 flex items-center">
             <Logo />
         </div>
       </header>
-      <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-        <div className="relative flex flex-1">
-          <div className={cn("transition-all duration-500 ease-in-out", isPreviewVisible ? 'w-full lg:w-2/5' : 'w-full')}>
-            <InvoiceForm
-              invoice={invoice}
-              setInvoice={setInvoice}
-            />
-          </div>
-
-          <div className={cn("mx-4", isPreviewVisible ? 'block' : 'hidden')}>
-              <Separator orientation="vertical" />
-          </div>
-          
-          <Button 
-            variant="outline" 
-            size="icon" 
-            className="absolute top-1/2 -translate-y-1/2 rounded-full bg-background z-10"
-            style={{ left: isPreviewVisible ? 'calc(41.666667% - 1.25rem)' : 'calc(100% - 3rem)', transition: 'left 0.5s ease-in-out'  }}
-            onClick={() => setIsPreviewVisible(!isPreviewVisible)}
-            >
-              {isPreviewVisible ? <ChevronLeft /> : <ChevronRight />}
-          </Button>
-
-          <div 
-            className={cn(
-                "lg:w-3/5 transition-all duration-500 ease-in-out sticky top-24 h-fit",
-                isPreviewVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full absolute w-full'
-            )}
-            style={{ transformOrigin: 'right center' }}
-          >
-            <Card className="shadow-lg">
-              <div ref={pdfRef} className="bg-card">
-                <InvoicePreview invoice={invoice} />
-              </div>
-              <div className="p-4 bg-muted/30 border-t flex justify-end gap-2">
-                <Button variant="outline" onClick={handlePreview}>
-                    <Eye />
-                    Preview
-                </Button>
-                <Button onClick={handleGeneratePDF}>
-                    <Download />
-                    Download
-                </Button>
-              </div>
-            </Card>
-          </div>
+       <div className="container mx-auto p-4 sm:p-6 lg:p-8">
+        <div className="flex flex-col items-center text-center space-y-4 mb-12">
+            <h1 className="text-4xl font-bold tracking-tight font-sans">Choose Your Invoice Style</h1>
+            <p className="text-lg text-muted-foreground max-w-2xl">
+                Select a template and color scheme to create a professional invoice that matches your brand.
+            </p>
         </div>
-      </div>
-    </main>
+
+        <div className="mb-12">
+            <h2 className="text-2xl font-semibold text-center mb-6 font-sans">1. Select a Template</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {templates.map((template) => (
+                    <div key={template.id} onClick={() => setSelectedTemplate(template.id)} className="cursor-pointer group">
+                        <Card className={cn("overflow-hidden transition-all h-48 flex items-center justify-center text-center p-4", selectedTemplate === template.id ? 'ring-2 ring-primary ring-offset-2' : 'hover:shadow-lg')}>
+                            <div className="flex flex-col items-center gap-2">
+                                <p className="font-medium text-lg capitalize">{template.name}</p>
+                                {selectedTemplate === template.id && <CheckCircle2 className="text-primary h-5 w-5"/>}
+                            </div>
+                        </Card>
+                    </div>
+                ))}
+            </div>
+        </div>
+
+        <div className="mb-12">
+            <h2 className="text-2xl font-semibold text-center mb-6 font-sans">2. Include Company Logo?</h2>
+            <div className="flex justify-center items-center gap-4">
+                <ImageOff className={cn("h-8 w-8", !withCompanyLogo ? "text-primary" : "text-muted-foreground")} />
+                <Switch
+                    id="company-logo-switch"
+                    checked={withCompanyLogo}
+                    onCheckedChange={setWithCompanyLogo}
+                />
+                <ImageIcon className={cn("h-8 w-8", withCompanyLogo ? "text-primary" : "text-muted-foreground")} />
+            </div>
+             <p className="text-center text-muted-foreground mt-2">{withCompanyLogo ? "Invoice will include a company logo." : "Invoice will not include a company logo."}</p>
+        </div>
+
+
+        <div className="mb-12">
+            <h2 className="text-2xl font-semibold text-center mb-6 font-sans">3. Pick a Color</h2>
+            <div className="flex justify-center flex-wrap gap-4">
+                {colors.map((color) => (
+                    <button key={color.name} onClick={() => setSelectedColor(color.value)} className={cn("h-12 w-12 rounded-full border-2 transition-all flex items-center justify-center", selectedColor === color.value ? 'border-primary scale-110 ring-2 ring-offset-2 ring-primary' : 'border-transparent hover:scale-105')} style={{ backgroundColor: `hsl(${color.value})`}}>
+                       {selectedColor === color.value && <CheckCircle2 className="h-6 w-6 text-white"/>}
+                    </button>
+                ))}
+            </div>
+        </div>
+        
+        <div className="text-center">
+            <Button size="lg" onClick={handleNext}>
+                Next <ArrowRight className="ml-2" />
+            </Button>
+        </div>
+       </div>
+    </div>
   );
 }

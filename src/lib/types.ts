@@ -15,6 +15,10 @@ export interface Invoice {
   items: InvoiceItem[];
   taxRate: number;
   notes: string;
+  companyLogo?: string;
+  companyName: string;
+  companyEmail: string;
+  companyAddress: string;
 }
 
 export interface Quotation extends Omit<Invoice, 'invoiceNumber'> {
