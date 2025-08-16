@@ -1,0 +1,132 @@
+
+"use client";
+
+import { useState, useRef } from "react";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import type { ContractData } from "@/lib/types";
+import ContractForm from "@/components/contract-form";
+import ContractPreview from "@/components/contract-preview";
+import { Card } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
+import { Logo } from "@/components/logo";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight, Download, Eye } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
+
+export default function ContractPage() {
+  const { toast } = useToast();
+  const pdfRef = useRef<HTMLDivElement>(null);
+  const [isPreviewVisible, setIsPreviewVisible] = useState(true);
+
+  const [contract, setContract] = useState<ContractData>({
+    title: "Service Agreement",
+    clientName: "Client Name",
+    contractorName: "Your Name / Company",
+    effectiveDate: new Date(),
+    scopeOfWork: "- Development of a new website.\n- Deployment and testing.\n- Basic SEO setup.",
+    paymentTerms: "- 50% upfront.\n- 50% upon completion.",
+    termsAndConditions: "1. All work will be completed within the agreed-upon timeframe...\n2. Any changes to the scope of work must be submitted in writing..."
+  });
+
+  const handleGeneratePDF = () => {
+    if (!isPreviewVisible) {
+      setIsPreviewVisible(true);
+      toast({ title: "Preview opened", description: "The contract preview is now visible for PDF generation." });
+      
+      setTimeout(() => {
+        generatePdfFromRef(pdfRef.current);
+      }, 500);
+      return;
+    }
+    generatePdfFromRef(pdfRef.current);
+  };
+  
+  const generatePdfFromRef = (input: HTMLDivElement | null) => {
+    if (input) {
+      toast({ title: "Generating PDF...", description: "Please wait a moment." });
+      html2canvas(input, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "white",
+      })
+        .then((canvas) => {
+          const imgData = canvas.toDataURL("image/png");
+          const pdf = new jsPDF("p", "mm", "a4");
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+          pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+          pdf.save(`${contract.title.replace(/\s/g, '_') || "contract"}.pdf`);
+          toast({ title: "Success!", description: "Your contract has been downloaded." });
+        })
+        .catch((err) => {
+          toast({ variant: "destructive", title: "Error", description: "Failed to generate PDF." });
+          console.error(err);
+        });
+    }
+  }
+
+  const handlePreview = () => {
+     setIsPreviewVisible(true);
+     toast({ title: "Preview Shown", description: "The contract preview is now visible." });
+  }
+
+  return (
+    <main className="min-h-screen bg-muted/50">
+       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container h-14 flex items-center">
+            <Logo />
+        </div>
+      </header>
+      <div className="container mx-auto p-4 sm:p-6 lg:p-8">
+        <div className="relative flex flex-1">
+          <div className={cn("transition-all duration-500 ease-in-out", isPreviewVisible ? 'w-full lg:w-2/5' : 'w-full')}>
+            <ContractForm
+              contract={contract}
+              setContract={setContract}
+            />
+          </div>
+
+          <div className={cn("mx-4", isPreviewVisible ? 'block' : 'hidden')}>
+              <Separator orientation="vertical" />
+          </div>
+          
+          <Button 
+            variant="outline" 
+            size="icon" 
+            className="absolute top-1/2 -translate-y-1/2 rounded-full bg-background z-10"
+            style={{ left: isPreviewVisible ? 'calc(41.666667% - 1.25rem)' : 'calc(100% - 3rem)', transition: 'left 0.5s ease-in-out'  }}
+            onClick={() => setIsPreviewVisible(!isPreviewVisible)}
+            >
+              {isPreviewVisible ? <ChevronLeft /> : <ChevronRight />}
+          </Button>
+
+          <div 
+            className={cn(
+                "lg:w-3/5 transition-all duration-500 ease-in-out sticky top-24 h-fit",
+                isPreviewVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full absolute w-full'
+            )}
+            style={{ transformOrigin: 'right center' }}
+          >
+            <Card className="shadow-lg">
+              <div ref={pdfRef} className="bg-card">
+                <ContractPreview contract={contract} />
+              </div>
+              <div className="p-4 bg-muted/30 border-t flex justify-end gap-2">
+                <Button variant="outline" onClick={handlePreview}>
+                    <Eye />
+                    Preview
+                </Button>
+                <Button onClick={handleGeneratePDF}>
+                    <Download />
+                    Download
+                </Button>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}

@@ -61,3 +61,13 @@ export interface BusinessCardData {
     logoUrl?: string;
     accentColor: string;
 }
+
+export interface ContractData {
+  title: string;
+  clientName: string;
+  contractorName: string;
+  effectiveDate: Date;
+  scopeOfWork: string;
+  paymentTerms: string;
+  termsAndConditions: string;
+}
