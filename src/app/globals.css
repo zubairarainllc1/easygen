@@ -90,13 +90,13 @@
   }
   .btn-gradient-border {
     padding: 2px;
-    background: linear-gradient(-45deg, #fde047, #f97316, #ec4899, #a855f7);
-    background-size: 400% 400%;
-    animation: gradient-animation 10s ease-in-out infinite;
+    background: transparent;
     transition: all 0.3s ease-in-out;
   }
   .btn-gradient-border:hover {
-    animation-duration: 2s;
+    background: linear-gradient(-45deg, #fde047, #f97316, #ec4899, #a855f7);
+    background-size: 400% 400%;
+    animation: gradient-animation 2s ease-in-out infinite;
     filter: brightness(1.2);
   }
 }
