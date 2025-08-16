@@ -317,8 +317,8 @@ export default function Home() {
           <div className="container mx-auto px-4 md:px-6">
             <div className="flex flex-col items-center space-y-6 text-center">
                 <div className="space-y-4">
-                  <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl font-sans text-gray-900">
-                    Create Professional <TypingAnimation words={['Resumes', 'Invoices', 'Quotations', 'Contracts']} />
+                  <h1 className="flex flex-col md:flex-row md:gap-x-4 items-center justify-center text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl font-sans text-gray-900">
+                    <span>Create Professional</span> <TypingAnimation words={['Resumes', 'Invoices', 'Quotations', 'Contracts']} />
                   </h1>
                   <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl py-6">
                     Our powerful tools help you generate beautiful invoices, CVs, and more. Focus on your work, we'll handle the paperwork.
