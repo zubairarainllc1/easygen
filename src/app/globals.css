@@ -76,7 +76,9 @@
 @layer utilities {
   @keyframes gradient-animation {
     0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
+    25% { background-position: 100% 50%; }
+    50% { background-position: 0% 50%; }
+    75% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
   }
   .animate-gradient {
@@ -84,6 +86,6 @@
     background-size: 400% 400%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: gradient-animation 15s ease infinite;
+    animation: gradient-animation 10s ease-in-out infinite;
   }
 }
