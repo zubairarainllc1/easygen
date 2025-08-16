@@ -12,8 +12,9 @@ import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
-import { Download, Eye, FlipHorizontal } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Download, Eye, FlipHorizontal, Menu } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import Link from "next/link";
 
 function BusinessCardEditorContent() {
   const searchParams = useSearchParams();
@@ -110,21 +111,37 @@ function BusinessCardEditorContent() {
   return (
     <main className="min-h-screen bg-muted/50">
       <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container h-14 flex items-center">
+        <div className="container h-16 flex items-center justify-between">
           <Logo />
+          <div className="md:hidden">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="icon">
+                    <Menu className="h-6 w-6" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent>
+                  <div className="flex flex-col gap-4 p-4">
+                     <Link href="/" className="font-semibold hover:text-primary transition-colors">Home</Link>
+                     <Link href="/blog" className="font-semibold hover:text-primary transition-colors">Blog</Link>
+                     <Link href="/how-to" className="font-semibold hover:text-primary transition-colors">How To</Link>
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
         </div>
       </header>
       <div className="container mx-auto p-4 sm:p-6 lg:p-8">
         <div className="grid lg:grid-cols-2 gap-8">
-          <div>
+          <div className="mb-8 lg:mb-0">
             <BusinessCardForm cardData={cardData} setCardData={setCardData} withLogo={withLogo}/>
           </div>
-          <div className="space-y-4 sticky top-24 h-fit">
+          <div className="space-y-4 lg:sticky lg:top-24 h-fit">
             <h2 className="text-xl font-semibold text-center">Preview</h2>
             <div className="flex justify-center">
                  <BusinessCardPreview cardData={cardData} frontRef={frontRef} backRef={backRef} isBack={isBack} template={template} />
             </div>
-            <div className="p-4 bg-muted/30 border-t flex justify-center gap-2 rounded-b-lg">
+            <div className="p-4 bg-muted/30 border-t flex flex-wrap justify-center gap-2 rounded-b-lg">
                 <Button variant="outline" onClick={() => setIsBack(!isBack)}>
                     <FlipHorizontal />
                     {isBack ? "Show Front" : "Show Back"}

@@ -36,14 +36,14 @@ export default function FullScreenContractPreview() {
 
   if (isLoading) {
     return (
-        <div className="p-8">
-            <Skeleton className="w-full h-[1123px]" />
+        <div className="p-4 md:p-8">
+            <Skeleton className="w-full h-[1123px] max-w-[8.5in] mx-auto" />
         </div>
     );
   }
 
   if (!previewData) {
-    return <div className="flex items-center justify-center h-screen text-red-500">Failed to load contract preview data. Please go back and try again.</div>;
+    return <div className="flex items-center justify-center h-screen text-red-500 text-center p-4">Failed to load contract preview data. Please go back and try again.</div>;
   }
   
   const handlePrint = () => {
@@ -51,7 +51,7 @@ export default function FullScreenContractPreview() {
   }
 
   return (
-    <main className="bg-gray-100 p-8 print:p-0 print:bg-white">
+    <main className="bg-gray-100 p-4 md:p-8 print:p-0 print:bg-white">
         <div className="fixed top-4 right-4 print:hidden">
             <Button onClick={handlePrint}><Printer className="mr-2"/> Print</Button>
         </div>

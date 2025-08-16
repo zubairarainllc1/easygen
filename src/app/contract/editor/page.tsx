@@ -12,9 +12,10 @@ import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Download, Eye } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
+import { Download, Eye, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import Link from "next/link";
 
 function ContractEditorPageContent() {
   const searchParams = useSearchParams();
@@ -52,6 +53,19 @@ function ContractEditorPageContent() {
       setPrimaryColor(colorParam);
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    const handleResize = () => {
+        if (window.innerWidth < 1024) {
+            setIsPreviewVisible(false);
+        } else {
+            setIsPreviewVisible(true);
+        }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (withCompanyLogo) {
@@ -116,13 +130,29 @@ function ContractEditorPageContent() {
   return (
     <main className="min-h-screen bg-muted/50">
        <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container h-14 flex items-center">
+        <div className="container h-16 flex items-center justify-between">
             <Logo />
+             <div className="md:hidden">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="icon">
+                    <Menu className="h-6 w-6" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent>
+                  <div className="flex flex-col gap-4 p-4">
+                     <Link href="/" className="font-semibold hover:text-primary transition-colors">Home</Link>
+                     <Link href="/blog" className="font-semibold hover:text-primary transition-colors">Blog</Link>
+                     <Link href="/how-to" className="font-semibold hover:text-primary transition-colors">How To</Link>
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
         </div>
       </header>
       <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-        <div className="relative flex flex-1">
-          <div className={cn("transition-all duration-500 ease-in-out", isPreviewVisible ? 'w-full lg:w-2/5' : 'w-full')}>
+        <div className="lg:grid lg:grid-cols-12 lg:gap-8">
+          <div className="lg:col-span-5 mb-8 lg:mb-0">
             <ContractForm
               contract={contract}
               setContract={setContract}
@@ -130,42 +160,29 @@ function ContractEditorPageContent() {
             />
           </div>
 
-          <div className={cn("mx-4", isPreviewVisible ? 'block' : 'hidden')}>
-              <Separator orientation="vertical" />
-          </div>
-          
-          <Button 
-            variant="outline" 
-            size="icon" 
-            className="absolute top-1/2 -translate-y-1/2 rounded-full bg-background z-10"
-            style={{ left: isPreviewVisible ? 'calc(41.666667% - 1.25rem)' : 'calc(100% - 3rem)', transition: 'left 0.5s ease-in-out'  }}
-            onClick={() => setIsPreviewVisible(!isPreviewVisible)}
-            >
-              {isPreviewVisible ? <ChevronLeft /> : <ChevronRight />}
-          </Button>
-
-          <div 
-            className={cn(
-                "lg:w-3/5 transition-all duration-500 ease-in-out sticky top-24 h-fit",
-                isPreviewVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full absolute w-full'
-            )}
-            style={{ transformOrigin: 'right center' }}
-          >
-            <Card className="shadow-lg">
-              <div ref={pdfRef} className="bg-card">
-                <ContractPreview contract={contract} template={template} primaryColor={primaryColor} />
-              </div>
-              <div className="p-4 bg-muted/30 border-t flex justify-end gap-2">
-                <Button variant="outline" onClick={handlePreview}>
-                    <Eye />
-                    Preview
+          <div className="lg:col-span-7 lg:sticky lg:top-24 h-fit">
+            <div className="flex justify-end mb-4 lg:hidden">
+                <Button variant={isPreviewVisible ? "secondary" : "default"} onClick={() => setIsPreviewVisible(!isPreviewVisible)}>
+                    {isPreviewVisible ? "Hide Preview" : "Show Preview"}
                 </Button>
-                <Button onClick={handleGeneratePDF}>
-                    <Download />
-                    Download
-                </Button>
-              </div>
-            </Card>
+            </div>
+             {isPreviewVisible && (
+                <Card className="shadow-lg">
+                  <div ref={pdfRef} className="bg-card">
+                    <ContractPreview contract={contract} template={template} primaryColor={primaryColor} />
+                  </div>
+                  <div className="p-4 bg-muted/30 border-t flex flex-wrap justify-end gap-2">
+                    <Button variant="outline" onClick={handlePreview}>
+                        <Eye />
+                        Preview
+                    </Button>
+                    <Button onClick={handleGeneratePDF}>
+                        <Download />
+                        Download
+                    </Button>
+                  </div>
+                </Card>
+             )}
           </div>
         </div>
       </div>

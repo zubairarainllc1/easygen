@@ -7,9 +7,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Logo } from "@/components/logo";
-import { Download, RefreshCw } from "lucide-react";
+import { Download, RefreshCw, Menu } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Slider } from "@/components/ui/slider";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import Link from "next/link";
 
 export default function QrCodeGeneratorPage() {
   const [data, setData] = useState("https://www.example.com");
@@ -62,15 +64,31 @@ export default function QrCodeGeneratorPage() {
   return (
     <div className="flex flex-col min-h-screen bg-muted/50">
       <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container h-14 flex items-center">
+        <div className="container h-16 flex items-center justify-between">
           <Logo />
+            <div className="md:hidden">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="icon">
+                    <Menu className="h-6 w-6" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent>
+                  <div className="flex flex-col gap-4 p-4">
+                     <Link href="/" className="font-semibold hover:text-primary transition-colors">Home</Link>
+                     <Link href="/blog" className="font-semibold hover:text-primary transition-colors">Blog</Link>
+                     <Link href="/how-to" className="font-semibold hover:text-primary transition-colors">How To</Link>
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
         </div>
       </header>
-      <main className="flex-1 flex items-center justify-center">
-        <div className="container mx-auto p-4 sm:p-6 lg:p-8">
+      <main className="flex-1 flex items-center justify-center py-12">
+        <div className="container mx-auto px-4">
             <div className="flex flex-col items-center text-center space-y-4 mb-12">
-                <h1 className="text-4xl font-bold tracking-tight font-sans">QR Code Generator</h1>
-                <p className="text-lg text-muted-foreground max-w-2xl">
+                <h1 className="text-3xl md:text-4xl font-bold tracking-tight font-sans">QR Code Generator</h1>
+                <p className="text-base md:text-lg text-muted-foreground max-w-2xl">
                     Create your own QR codes for free. Enter any text or URL below.
                 </p>
             </div>
@@ -123,15 +141,15 @@ export default function QrCodeGeneratorPage() {
                             <CardTitle>Preview</CardTitle>
                             <CardDescription>Your QR code will update automatically.</CardDescription>
                         </CardHeader>
-                        <CardContent className="flex flex-col items-center justify-center p-6 min-h-[250px]">
+                        <CardContent className="flex flex-col items-center justify-center p-6 min-h-[250px] aspect-square">
                             {qrCodeUrl ? (
                                 <img 
                                     src={qrCodeUrl} 
                                     alt="Generated QR Code" 
-                                    className="border-4 border-white rounded-lg shadow-md"
+                                    className="border-4 border-white rounded-lg shadow-md w-full h-full object-contain"
                                 />
                             ) : (
-                                <div className="w-[250px] h-[250px] bg-gray-200 flex items-center justify-center text-muted-foreground rounded-lg text-center p-4">
+                                <div className="w-full h-full bg-gray-200 flex items-center justify-center text-muted-foreground rounded-lg text-center p-4">
                                     Your QR code will appear here. Start by typing in the data field.
                                 </div>
                             )}
