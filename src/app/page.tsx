@@ -102,8 +102,8 @@ export default function Home() {
     const filteredTools = tools.filter(tool => filter === 'all' || tool.category === filter);
     
     useEffect(() => {
-        const activeTab = tabsRef.current?.querySelector(`[data-state="active"]`);
-        if (activeTab instanceof HTMLElement) {
+        const activeTab = tabsRef.current?.querySelector<HTMLElement>('[data-state="active"]');
+        if (activeTab) {
             setGliderStyle({
                 left: activeTab.offsetLeft,
                 width: activeTab.offsetWidth,
@@ -160,7 +160,7 @@ export default function Home() {
                     Create Professional Documents in Seconds
                   </h1>
                   <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                    Your one-stop solution for generating professional documents, business cards, QR codes, and more.
+                    Our powerful tools help you generate beautiful invoices, CVs, and more. Focus on your work, we'll handle the paperwork.
                   </p>
                 </div>
                 <div className="space-x-4">
