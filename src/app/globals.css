@@ -72,3 +72,41 @@
     -moz-osx-font-smoothing: grayscale;
   }
 }
+
+@layer utilities {
+  @keyframes gradient-animation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  .animate-gradient {
+    background: linear-gradient(-45deg, #f97316, #ec4899, #fde047, #f97316);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-animation 10s ease infinite;
+  }
+
+  .animate-border {
+    position: relative;
+    border-radius: 0.75rem; /* match with rounded-xl */
+    overflow: hidden;
+    padding: 2px;
+  }
+
+  .animate-border::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+      from 180deg at 50% 50%,
+      #f97316, #ec4899, #fde047, #f97316
+    );
+    animation: gradient-animation 8s linear infinite;
+    z-index: -1;
+  }
+}
