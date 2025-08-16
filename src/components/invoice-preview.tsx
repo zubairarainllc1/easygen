@@ -19,11 +19,11 @@ export default function InvoicePreview({ invoice }: { invoice: Invoice }) {
   const total = subtotal + taxAmount;
 
   return (
-    <div className="p-8 bg-card text-card-foreground rounded-lg">
+    <div className="p-8 bg-card text-card-foreground rounded-lg font-sans">
       <div className="flex justify-between items-start mb-8 flex-wrap gap-4">
         <Logo />
         <div className="text-right flex-shrink-0">
-          <h2 className="text-2xl font-bold text-primary font-headline">INVOICE</h2>
+          <h2 className="text-2xl font-bold text-primary">INVOICE</h2>
           <p className="text-muted-foreground">#{invoice.invoiceNumber}</p>
           <p className="text-muted-foreground mt-1">Date: {format(invoice.date, 'PPP')}</p>
         </div>

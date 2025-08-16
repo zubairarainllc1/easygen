@@ -86,12 +86,12 @@ export default function CvForm({ cvData, setCvData, withProfileImage }: CvFormPr
   return (
     <Card className="shadow-lg h-full">
       <CardHeader>
-        <CardTitle className="font-headline text-primary">CV Details</CardTitle>
+        <CardTitle className="font-sans text-primary">CV Details</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         <Accordion type="multiple" defaultValue={['personal', 'summary', 'experience', 'education', 'skills']} className="w-full">
           <AccordionItem value="personal">
-            <AccordionTrigger className="text-lg font-medium text-primary font-headline">Personal Information</AccordionTrigger>
+            <AccordionTrigger className="text-lg font-medium text-primary font-sans">Personal Information</AccordionTrigger>
             <AccordionContent className="space-y-4 pt-4">
               {withProfileImage && (
                 <div className="space-y-2">
@@ -128,7 +128,7 @@ export default function CvForm({ cvData, setCvData, withProfileImage }: CvFormPr
           </AccordionItem>
 
           <AccordionItem value="summary">
-            <AccordionTrigger className="text-lg font-medium text-primary font-headline">Summary</AccordionTrigger>
+            <AccordionTrigger className="text-lg font-medium text-primary font-sans">Summary</AccordionTrigger>
             <AccordionContent className="pt-4">
               <div className="space-y-2">
                 <Label htmlFor="summary">Professional Summary</Label>
@@ -138,7 +138,7 @@ export default function CvForm({ cvData, setCvData, withProfileImage }: CvFormPr
           </AccordionItem>
           
           <AccordionItem value="experience">
-            <AccordionTrigger className="text-lg font-medium text-primary font-headline">Work Experience</AccordionTrigger>
+            <AccordionTrigger className="text-lg font-medium text-primary font-sans">Work Experience</AccordionTrigger>
             <AccordionContent className="pt-4 space-y-4">
               {cvData.experience.map((exp, index) => (
                 <div key={exp.id} className="p-4 border rounded-lg space-y-4 relative">
@@ -172,7 +172,7 @@ export default function CvForm({ cvData, setCvData, withProfileImage }: CvFormPr
           </AccordionItem>
 
            <AccordionItem value="education">
-            <AccordionTrigger className="text-lg font-medium text-primary font-headline">Education</AccordionTrigger>
+            <AccordionTrigger className="text-lg font-medium text-primary font-sans">Education</AccordionTrigger>
             <AccordionContent className="pt-4 space-y-4">
               {cvData.education.map((edu, index) => (
                 <div key={edu.id} className="p-4 border rounded-lg space-y-4 relative">
@@ -202,7 +202,7 @@ export default function CvForm({ cvData, setCvData, withProfileImage }: CvFormPr
           </AccordionItem>
 
           <AccordionItem value="skills">
-            <AccordionTrigger className="text-lg font-medium text-primary font-headline">Skills</AccordionTrigger>
+            <AccordionTrigger className="text-lg font-medium text-primary font-sans">Skills</AccordionTrigger>
             <AccordionContent className="pt-4">
                <div className="space-y-2">
                 <Label htmlFor="skills">Skills (comma-separated)</Label>

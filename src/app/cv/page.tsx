@@ -48,22 +48,22 @@ export default function CvTemplatePage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-       <div className="border-b">
-        <div className="mx-auto max-w-screen-2xl p-4 sm:p-6 lg:p-4">
-          <Logo />
+    <div className="min-h-screen bg-muted/50">
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container h-14 flex items-center">
+            <Logo />
         </div>
-      </div>
-       <div className="mx-auto max-w-screen-2xl p-4 sm:p-6 lg:p-8">
+      </header>
+       <div className="container mx-auto p-4 sm:p-6 lg:p-8">
         <div className="flex flex-col items-center text-center space-y-4 mb-12">
-            <h1 className="text-4xl font-bold tracking-tight text-primary font-headline">Choose Your CV Template</h1>
+            <h1 className="text-4xl font-bold tracking-tight font-sans">Choose Your CV Template</h1>
             <p className="text-lg text-muted-foreground max-w-2xl">
                 Select a template that best represents your professional profile. You can also choose a color scheme to personalize it.
             </p>
         </div>
 
         <div className="mb-12">
-            <h2 className="text-2xl font-semibold text-center mb-6 text-primary/90 font-headline">1. Select a Template</h2>
+            <h2 className="text-2xl font-semibold text-center mb-6 font-sans">1. Select a Template</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                 {templates.map((template) => (
                     <div key={template.id} onClick={() => setSelectedTemplate(template.id)} className="cursor-pointer group">
@@ -79,7 +79,7 @@ export default function CvTemplatePage() {
         </div>
 
         <div className="mb-12">
-            <h2 className="text-2xl font-semibold text-center mb-6 text-primary/90 font-headline">2. Include Profile Image?</h2>
+            <h2 className="text-2xl font-semibold text-center mb-6 font-sans">2. Include Profile Image?</h2>
             <div className="flex justify-center items-center gap-4">
                 <User className={cn("h-8 w-8", !withProfileImage ? "text-primary" : "text-muted-foreground")} />
                 <Switch
@@ -94,10 +94,10 @@ export default function CvTemplatePage() {
 
 
         <div className="mb-12">
-            <h2 className="text-2xl font-semibold text-center mb-6 text-primary/90 font-headline">3. Pick a Color</h2>
+            <h2 className="text-2xl font-semibold text-center mb-6 font-sans">3. Pick a Color</h2>
             <div className="flex justify-center flex-wrap gap-4">
                 {colors.map((color) => (
-                    <button key={color.name} onClick={() => setSelectedColor(color.value)} className={cn("h-12 w-12 rounded-full border-2 transition-all flex items-center justify-center", selectedColor === color.value ? 'border-primary scale-110' : 'border-transparent hover:scale-105')} style={{ backgroundColor: `hsl(${color.value})`}}>
+                    <button key={color.name} onClick={() => setSelectedColor(color.value)} className={cn("h-12 w-12 rounded-full border-2 transition-all flex items-center justify-center", selectedColor === color.value ? 'border-primary scale-110 ring-2 ring-offset-2 ring-primary' : 'border-transparent hover:scale-105')} style={{ backgroundColor: `hsl(${color.value})`}}>
                        {selectedColor === color.value && <CheckCircle2 className="h-6 w-6 text-white"/>}
                     </button>
                 ))}

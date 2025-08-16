@@ -53,7 +53,7 @@ export default function InvoiceForm({ invoice, setInvoice }: InvoiceFormProps) {
   return (
     <Card className="shadow-lg">
       <CardHeader>
-        <CardTitle className="font-headline text-primary">Invoice Details</CardTitle>
+        <CardTitle className="font-sans text-primary">Invoice Details</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -81,7 +81,7 @@ export default function InvoiceForm({ invoice, setInvoice }: InvoiceFormProps) {
         </div>
 
         <div className="space-y-4">
-          <h3 className="text-lg font-medium text-primary font-headline">Client Information</h3>
+          <h3 className="text-lg font-medium text-primary font-sans">Client Information</h3>
           <div className="space-y-2">
             <Label htmlFor="clientName">Client Name</Label>
             <Input id="clientName" name="clientName" value={invoice.clientName} onChange={handleInputChange} />
@@ -98,7 +98,7 @@ export default function InvoiceForm({ invoice, setInvoice }: InvoiceFormProps) {
 
         <div>
           <div className="flex justify-between items-center mb-2">
-             <h3 className="text-lg font-medium text-primary font-headline">Items</h3>
+             <h3 className="text-lg font-medium text-primary font-sans">Items</h3>
           </div>
           <div className="border rounded-md">
             <Table>

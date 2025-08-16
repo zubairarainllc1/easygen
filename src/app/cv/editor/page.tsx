@@ -29,7 +29,7 @@ function CvEditorPageContent() {
   const [isPreviewVisible, setIsPreviewVisible] = useState(true);
   
   const [template, setTemplate] = useState<"classic" | "modern" | "minimalist" | "creative" | "professional">("classic");
-  const [primaryColor, setPrimaryColor] = useState("228 65% 33%"); // Default blue
+  const [primaryColor, setPrimaryColor] = useState("221 83% 53%");
   const [withProfileImage, setWithProfileImage] = useState(false);
 
   useEffect(() => {
@@ -45,6 +45,8 @@ function CvEditorPageContent() {
     if (colorParam) {
       setPrimaryColor(colorParam);
       document.documentElement.style.setProperty('--primary', colorParam);
+    } else {
+        document.documentElement.style.setProperty('--primary', "221 83% 53%");
     }
      // Cleanup function to reset the color when the component unmounts
     return () => {
@@ -148,13 +150,13 @@ function CvEditorPageContent() {
 
 
   return (
-    <main className="min-h-screen bg-background">
-      <div className="border-b">
-        <div className="mx-auto max-w-screen-2xl p-4 sm:p-6 lg:p-4">
-          <Logo />
+    <main className="min-h-screen bg-muted/50">
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container h-14 flex items-center">
+            <Logo />
         </div>
-      </div>
-      <div className="mx-auto max-w-screen-2xl p-4 sm:p-6 lg:p-8">
+      </header>
+      <div className="container mx-auto p-4 sm:p-6 lg:p-8">
         <div className="relative flex flex-1">
           <div className={cn("transition-all duration-500 ease-in-out", isPreviewVisible ? "w-full lg:w-2/5" : "w-full")}>
             <CvForm cvData={cvData} setCvData={setCvData} withProfileImage={withProfileImage} />
@@ -175,18 +177,18 @@ function CvEditorPageContent() {
           </Button>
 
           <div
-            className={cn("lg:w-3/5 transition-all duration-500 ease-in-out sticky top-8 h-fit", isPreviewVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-full absolute w-full")}
+            className={cn("lg:w-3/5 transition-all duration-500 ease-in-out sticky top-24 h-fit", isPreviewVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-full absolute w-full")}
             style={{ transformOrigin: "right center" }}
           >
             <Card className="shadow-lg">
               <div ref={pdfRef} className="bg-card printable-content">
                 <CvPreview cvData={cvData} template={template} />
               </div>
-              <div className="p-4 bg-background/50 border-t flex justify-end gap-2">
+              <div className="p-4 bg-muted/30 border-t flex justify-end gap-2">
                  <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline">
-                            <LayoutTemplate className="mr-2"/>
+                            <LayoutTemplate/>
                             Template
                         </Button>
                     </DropdownMenuTrigger>
@@ -200,11 +202,11 @@ function CvEditorPageContent() {
                 </DropdownMenu>
 
                 <Button variant="outline" onClick={handlePreview}>
-                  <Eye className="mr-2" />
+                  <Eye />
                   Preview
                 </Button>
-                <Button onClick={handleGeneratePDF} className="bg-accent text-accent-foreground hover:bg-accent/90">
-                  <Download className="mr-2" />
+                <Button onClick={handleGeneratePDF}>
+                  <Download />
                   Download
                 </Button>
               </div>
