@@ -220,7 +220,7 @@ export default function Home() {
                   <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl font-sans text-gray-900">
                     Create Professional <span className="text-primary block sm:inline"><TypingAnimation /></span>
                   </h1>
-                  <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
+                  <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl py-4">
                     Our powerful tools help you generate beautiful invoices, CVs, and more. Focus on your work, we'll handle the paperwork.
                   </p>
                 </div>
@@ -295,3 +295,5 @@ const ListItem = React.forwardRef<
   )
 })
 ListItem.displayName = "ListItem"
+
+    
