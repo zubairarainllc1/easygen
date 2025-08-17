@@ -8,7 +8,6 @@ import html2canvas from "html2canvas";
 import type { BusinessCardData } from "@/lib/types";
 import BusinessCardForm from "@/components/business-card-form";
 import BusinessCardPreview from "@/components/business-card-preview";
-import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
@@ -126,22 +125,24 @@ function BusinessCardEditorContent() {
     }
   };
 
-  const editorAndPreview = (
-    <div className="lg:grid lg:grid-cols-2 gap-8">
-        <div className={cn("mb-8 lg:mb-0", isMobile && viewMode === 'preview' && "hidden")}>
-            <BusinessCardForm cardData={cardData} setCardData={setCardData} withLogo={withLogo}/>
-        </div>
-        <div className={cn("space-y-4 lg:sticky lg:top-24 h-fit", isMobile && viewMode === 'edit' && "hidden")}>
+  const editorSide = (
+      <div className={cn("lg:col-span-5 mb-8 lg:mb-0", isMobile && "w-full")}>
+          <BusinessCardForm cardData={cardData} setCardData={setCardData} withLogo={withLogo}/>
+      </div>
+  )
+
+  const previewSide = (
+      <div className={cn("space-y-4 lg:sticky lg:top-24 h-fit", isMobile && "w-full")}>
         <h2 className="text-xl font-semibold text-center">Preview</h2>
         <div className="flex justify-center">
-                <BusinessCardPreview cardData={cardData} frontRef={frontRef} backRef={backRef} isBack={isBack} template={template} />
+            <BusinessCardPreview cardData={cardData} frontRef={frontRef} backRef={backRef} isBack={isBack} template={template} />
         </div>
         <div className="p-4 bg-muted/30 border-t flex flex-wrap justify-center gap-2 rounded-b-lg">
             <Button variant="outline" onClick={() => setIsBack(!isBack)}>
                 <FlipHorizontal />
                 {isBack ? "Show Front" : "Show Back"}
             </Button>
-                <Button variant="outline" onClick={handlePreview}>
+            <Button variant="outline" onClick={handlePreview}>
                 <Eye />
                 Full Screen
             </Button>
@@ -150,8 +151,7 @@ function BusinessCardEditorContent() {
                 Download
             </Button>
         </div>
-        </div>
-    </div>
+      </div>
   )
 
   return (
@@ -192,25 +192,32 @@ function BusinessCardEditorContent() {
             </div>
         )}
 
-        <div className="relative perspective-1000">
-            <div className={cn("transition-transform duration-700 ease-in-out", isMobile && "transform-style-3d", isMobile && viewMode === 'preview' ? 'rotate-y-180' : 'rotate-y-0' )}>
-                <div className={cn(isMobile && "backface-hidden")}>
-                    {editorAndPreview}
-                </div>
-                {isMobile && (
-                    <div className="absolute top-0 left-0 w-full h-full backface-hidden rotate-y-180">
-                         {editorAndPreview}
-                    </div>
-                )}
+        {!isMobile && (
+            <div className="lg:grid lg:grid-cols-2 gap-8">
+                {editorSide}
+                {previewSide}
             </div>
-        </div>
+        )}
+
+        {isMobile && (
+            <div className="relative perspective-1000 min-h-[50vh]">
+                <div className={cn("transition-transform duration-700 ease-in-out w-full", "transform-style-3d", viewMode === 'preview' ? 'rotate-y-180' : 'rotate-y-0' )}>
+                    <div className="backface-hidden">
+                        {editorSide}
+                    </div>
+                    <div className="absolute top-0 left-0 w-full h-full backface-hidden rotate-y-180">
+                         {previewSide}
+                    </div>
+                </div>
+            </div>
+        )}
 
         <style jsx global>{`
           .transform-style-3d { transform-style: preserve-3d; }
           .perspective-1000 { perspective: 1000px; }
           .rotate-y-0 { transform: rotateY(0deg); }
           .rotate-y-180 { transform: rotateY(180deg); }
-          .backface-hidden { backface-visibility: hidden; }
+          .backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
         `}</style>
       </div>
     </main>
@@ -224,5 +231,3 @@ export default function BusinessCardEditorPage() {
         </Suspense>
     )
 }
-
-    
