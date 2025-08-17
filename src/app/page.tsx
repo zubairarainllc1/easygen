@@ -6,7 +6,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Logo } from "@/components/logo";
-import { ArrowRight, FileSignature, FileText, MoveRight, FileJson, Contact, FileCheck2, QrCode, Menu, FileBadge } from "lucide-react";
+import { ArrowRight, FileSignature, FileText, MoveRight, FileJson, Contact, FileCheck2, QrCode, Menu, FileBadge, Search } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import {
@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import Image from "next/image";
+import { Input } from "@/components/ui/input";
 
 
 const tools = [
@@ -229,10 +230,15 @@ const TypingAnimation = ({ words }: { words: string[] }) => {
 
 export default function Home() {
     const [filter, setFilter] = useState('all');
+    const [searchTerm, setSearchTerm] = useState('');
     const tabsRef = useRef<HTMLDivElement>(null);
     const [gliderStyle, setGliderStyle] = useState({});
     
-    const filteredTools = tools.filter(tool => filter === 'all' || tool.category === filter);
+    const filteredTools = tools.filter(tool => {
+        const matchesCategory = filter === 'all' || tool.category === filter;
+        const matchesSearch = tool.title.toLowerCase().includes(searchTerm.toLowerCase());
+        return matchesCategory && matchesSearch;
+    });
     
     useEffect(() => {
         const activeTab = tabsRef.current?.querySelector<HTMLElement>('[data-state="active"]');
@@ -341,7 +347,7 @@ export default function Home() {
                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl font-sans">Our Tools</h2>
                <p className="text-muted-foreground md:text-lg max-w-2xl">Select a tool to begin creating your document. Each one is designed for simplicity and professional results.</p>
             </div>
-             <div className="flex justify-center mb-8">
+             <div className="flex flex-col items-center gap-6 mb-8">
                 <Tabs value={filter} onValueChange={setFilter}>
                     <TabsList ref={tabsRef} className="relative">
                         <span 
@@ -354,9 +360,25 @@ export default function Home() {
                         <TabsTrigger value="productive">Productive</TabsTrigger>
                     </TabsList>
                 </Tabs>
+                <div className="relative w-full max-w-sm">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                    <Input 
+                        type="search"
+                        placeholder="Search for a tool..."
+                        className="w-full pl-10"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                </div>
             </div>
             <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 py-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {filteredTools.map((tool) => <ToolCard key={tool.href} tool={tool} />)}
+              {filteredTools.length > 0 ? (
+                filteredTools.map((tool) => <ToolCard key={tool.href} tool={tool} />)
+              ) : (
+                <div className="col-span-full text-center text-muted-foreground">
+                    No tools found for &quot;{searchTerm}&quot;
+                </div>
+              )}
             </div>
           </div>
         </section>
@@ -435,3 +457,5 @@ const ListItem = React.forwardRef<
   )
 })
 ListItem.displayName = "ListItem"
+
+    
