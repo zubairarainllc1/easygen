@@ -181,10 +181,12 @@ function QuotationEditorPageContent() {
   const previewSide = (
       <div className={cn("lg:col-span-7 lg:sticky lg:top-24 h-fit", isMobile && "w-full")}>
           <Card className="shadow-lg">
-            <div className="bg-card overflow-x-auto">
+            <div className="bg-card overflow-x-auto p-4 flex justify-center">
+              <div className={cn(isMobile && "scale-[0.4] origin-top")}>
                 <div ref={pdfRef} className="printable-content min-w-[8.5in]">
                     <QuotationPreview quotation={quotation} template={template} primaryColor={primaryColor} />
                 </div>
+              </div>
             </div>
             <div className="p-4 bg-muted/30 border-t flex flex-wrap justify-end gap-2">
                 <Button variant="outline" onClick={handlePreview}>
@@ -282,3 +284,5 @@ export default function QuotationEditorPage() {
         </Suspense>
     )
 }
+
+    
