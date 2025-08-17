@@ -54,7 +54,7 @@ export default function FullScreenBusinessCardPreview() {
         <div className="fixed top-4 right-4 print:hidden">
             <Button onClick={handlePrint}><Printer className="mr-2"/> Print</Button>
         </div>
-        <div className="w-full max-w-md mx-auto space-y-8">
+        <div className="w-full mx-auto space-y-8 flex flex-col items-center">
             <h2 className="text-2xl font-bold text-center print:hidden">Front</h2>
             <div className="flex justify-center">
                 <BusinessCardPreview 
@@ -67,7 +67,7 @@ export default function FullScreenBusinessCardPreview() {
                 />
             </div>
 
-            <h2 className="text-2xl font-bold text-center print:hidden pt-8 md:pt-20">Back</h2>
+            <h2 className="text-2xl font-bold text-center print:hidden pt-8 md:pt-12">Back</h2>
              <div className="flex justify-center">
                 <BusinessCardPreview 
                     cardData={previewData.cardData} 

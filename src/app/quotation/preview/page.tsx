@@ -22,7 +22,11 @@ export default function FullScreenQuotationPreview() {
     try {
       const data = localStorage.getItem('quotationPreviewData');
       if (data) {
-        setPreviewData(JSON.parse(data));
+        const parsedData = JSON.parse(data);
+        // Date strings need to be converted back to Date objects
+        parsedData.quotation.date = new Date(parsedData.quotation.date);
+        parsedData.quotation.validUntil = new Date(parsedData.quotation.validUntil);
+        setPreviewData(parsedData);
       }
     } catch (error) {
       console.error("Failed to load preview data", error);
@@ -52,7 +56,7 @@ export default function FullScreenQuotationPreview() {
         <div className="fixed top-4 right-4 print:hidden">
             <Button onClick={handlePrint}><Printer className="mr-2"/> Print</Button>
         </div>
-        <div className="max-w-[8.5in] mx-auto bg-white shadow-lg print:shadow-none">
+        <div className="w-[8.5in] mx-auto bg-white shadow-lg print:shadow-none">
             <QuotationPreview quotation={previewData.quotation} template={previewData.template} primaryColor={previewData.primaryColor} />
         </div>
 

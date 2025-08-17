@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   title: 'DocuGen',
   description: 'Create and manage your documents with ease.',
   viewport: 'width=device-width, initial-scale=1.0',
+  icons: [],
 };
 
 export default function RootLayout({

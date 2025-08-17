@@ -52,7 +52,7 @@ export default function FullScreenInvoicePreview() {
         <div className="fixed top-4 right-4 print:hidden">
             <Button onClick={handlePrint}><Printer className="mr-2"/> Print</Button>
         </div>
-        <div className="max-w-[8.5in] mx-auto bg-white shadow-lg print:shadow-none">
+        <div className="w-[8.5in] mx-auto bg-white shadow-lg print:shadow-none">
             <InvoicePreview invoice={previewData.invoice} template={previewData.template} primaryColor={previewData.primaryColor} />
         </div>
 
