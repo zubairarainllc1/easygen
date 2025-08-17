@@ -9,7 +9,7 @@ import { addDays } from "date-fns";
 import type { Quotation } from "@/lib/types";
 import QuotationForm from "@/components/quotation-form";
 import QuotationPreview from "@/components/quotation-preview";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
@@ -177,9 +177,41 @@ function QuotationEditorPageContent() {
           />
       </div>
   )
+  
+  const actionButtons = (
+     <div className="p-4 bg-muted/30 flex flex-wrap justify-end gap-2 rounded-b-lg">
+        <Button variant="outline" onClick={handlePreview}>
+            <Eye />
+            Full Screen
+        </Button>
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button>
+                    <Download />
+                    Download
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+                <DropdownMenuItem onSelect={() => handleDownload("pdf")}>
+                    <FileText className="mr-2"/> As PDF
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => handleDownload("png")}>
+                    <FileImage className="mr-2"/> As PNG
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    </div>
+  );
 
   const previewSide = (
       <div className={cn("lg:col-span-7 lg:sticky lg:top-24 h-fit", isMobile && "w-full")}>
+          {isMobile && (
+             <Card className="mb-4">
+                <CardContent className="p-0">
+                    {actionButtons}
+                </CardContent>
+             </Card>
+          )}
           <Card className="shadow-lg">
             <div className={cn("bg-card overflow-x-auto p-4 flex justify-center", isMobile && "h-fit")}>
               <div className={cn(isMobile && "scale-[0.4] origin-top")}>
@@ -188,28 +220,11 @@ function QuotationEditorPageContent() {
                 </div>
               </div>
             </div>
-            <div className="p-4 bg-muted/30 border-t flex flex-wrap justify-end gap-2">
-                <Button variant="outline" onClick={handlePreview}>
-                    <Eye />
-                    Full Screen
-                </Button>
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button>
-                            <Download />
-                            Download
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        <DropdownMenuItem onSelect={() => handleDownload("pdf")}>
-                            <FileText className="mr-2"/> As PDF
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onSelect={() => handleDownload("png")}>
-                            <FileImage className="mr-2"/> As PNG
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            </div>
+            {!isMobile && (
+                <div className="p-4 bg-muted/30 border-t flex flex-wrap justify-end gap-2">
+                    {actionButtons}
+                </div>
+            )}
           </Card>
       </div>
   )

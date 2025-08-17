@@ -17,6 +17,7 @@ import Link from "next/link";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { Card, CardContent } from "@/components/ui/card";
 
 function BusinessCardEditorContent() {
   const searchParams = useSearchParams();
@@ -131,26 +132,44 @@ function BusinessCardEditorContent() {
       </div>
   )
 
+  const actionButtons = (
+     <div className="p-4 bg-muted/30 flex flex-wrap justify-center gap-2 rounded-b-lg">
+        <Button variant="outline" onClick={() => setIsBack(!isBack)}>
+            <FlipHorizontal />
+            {isBack ? "Show Front" : "Show Back"}
+        </Button>
+        <Button variant="outline" onClick={handlePreview}>
+            <Eye />
+            Full Screen
+        </Button>
+        <Button onClick={generatePdf}>
+            <Download />
+            Download
+        </Button>
+    </div>
+  );
+
   const previewSide = (
       <div className={cn("space-y-4 lg:sticky lg:top-24 h-fit", isMobile && "w-full")}>
-        <h2 className="text-xl font-semibold text-center">Preview</h2>
+        <h2 className="text-xl font-semibold text-center lg:block hidden">Preview</h2>
+        
+        {isMobile && (
+             <Card className="mb-4">
+                <CardContent className="p-0">
+                    {actionButtons}
+                </CardContent>
+             </Card>
+        )}
+
         <div className="flex justify-center overflow-x-auto">
             <BusinessCardPreview cardData={cardData} frontRef={frontRef} backRef={backRef} isBack={isBack} template={template} />
         </div>
-        <div className="p-4 bg-muted/30 border-t flex flex-wrap justify-center gap-2 rounded-b-lg">
-            <Button variant="outline" onClick={() => setIsBack(!isBack)}>
-                <FlipHorizontal />
-                {isBack ? "Show Front" : "Show Back"}
-            </Button>
-            <Button variant="outline" onClick={handlePreview}>
-                <Eye />
-                Full Screen
-            </Button>
-            <Button onClick={generatePdf}>
-                <Download />
-                Download
-            </Button>
-        </div>
+        
+        {!isMobile && (
+            <div className="p-4 bg-muted/30 border-t flex flex-wrap justify-center gap-2 rounded-b-lg">
+                {actionButtons}
+            </div>
+        )}
       </div>
   )
 

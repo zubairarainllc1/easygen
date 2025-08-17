@@ -8,7 +8,7 @@ import html2canvas from "html2canvas";
 import type { CvData } from "@/lib/types";
 import CvForm from "@/components/cv-form";
 import CvPreview from "@/components/cv-preview";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
@@ -175,9 +175,45 @@ function CvEditorPageContent() {
           <CvForm cvData={cvData} setCvData={setCvData} withProfileImage={withProfileImage} />
       </div>
   )
+  
+  const actionButtons = (
+     <div className="p-4 bg-muted/30 flex flex-wrap justify-end gap-2 rounded-b-lg">
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                    <LayoutTemplate/>
+                    Template
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+                <DropdownMenuItem onSelect={() => setTemplate("classic")}>Classic</DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setTemplate("modern")}>Modern</DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setTemplate("minimalist")}>Minimalist</DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setTemplate("creative")}>Creative</DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setTemplate("professional")}>Professional</DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
+
+        <Button variant="outline" onClick={handlePreview}>
+            <Eye />
+            Full Screen
+        </Button>
+        <Button onClick={handleGeneratePDF}>
+            <Download />
+            Download
+        </Button>
+    </div>
+  );
 
   const previewSide = (
       <div className={cn("lg:col-span-7 lg:sticky lg:top-24 h-fit", isMobile && "w-full")}>
+          {isMobile && (
+             <Card className="mb-4">
+                <CardContent className="p-0">
+                    {actionButtons}
+                </CardContent>
+             </Card>
+          )}
           <Card className="shadow-lg">
               <div className={cn("bg-card overflow-x-auto p-4 flex justify-center", isMobile && "h-fit")}>
                 <div className={cn(isMobile && "scale-[0.4] origin-top")}>
@@ -186,32 +222,11 @@ function CvEditorPageContent() {
                   </div>
                 </div>
               </div>
-              <div className="p-4 bg-muted/30 border-t flex flex-wrap justify-end gap-2">
-              <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                      <Button variant="outline">
-                          <LayoutTemplate/>
-                          Template
-                      </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                      <DropdownMenuItem onSelect={() => setTemplate("classic")}>Classic</DropdownMenuItem>
-                      <DropdownMenuItem onSelect={() => setTemplate("modern")}>Modern</DropdownMenuItem>
-                      <DropdownMenuItem onSelect={() => setTemplate("minimalist")}>Minimalist</DropdownMenuItem>
-                      <DropdownMenuItem onSelect={() => setTemplate("creative")}>Creative</DropdownMenuItem>
-                      <DropdownMenuItem onSelect={() => setTemplate("professional")}>Professional</DropdownMenuItem>
-                  </DropdownMenuContent>
-              </DropdownMenu>
-
-              <Button variant="outline" onClick={handlePreview}>
-                  <Eye />
-                  Full Screen
-              </Button>
-              <Button onClick={handleGeneratePDF}>
-                  <Download />
-                  Download
-              </Button>
-              </div>
+              {!isMobile && (
+                <div className="p-4 bg-muted/30 border-t flex flex-wrap justify-end gap-2">
+                    {actionButtons}
+                </div>
+              )}
           </Card>
       </div>
   )
