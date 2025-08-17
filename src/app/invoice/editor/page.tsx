@@ -245,16 +245,13 @@ function InvoiceEditorPageContent() {
       </header>
       <div className="container mx-auto p-4 sm:p-6 lg:p-8">
         {isMobile && (
-            <div className="flex items-center justify-center space-x-2 mb-6 p-4 border rounded-lg bg-background">
-                <Pencil className={cn("h-5 w-5", viewMode === 'edit' ? "text-primary" : "text-muted-foreground")} />
-                <Label htmlFor="view-mode-switch" className={cn(viewMode === 'edit' && "text-primary")}>Edit</Label>
-                <Switch 
-                    id="view-mode-switch" 
-                    checked={viewMode === 'preview'} 
-                    onCheckedChange={(checked) => setViewMode(checked ? 'preview' : 'edit')}
-                />
-                <Label htmlFor="view-mode-switch" className={cn(viewMode === 'preview' && "text-primary")}>Preview</Label>
-                <BookOpen className={cn("h-5 w-5", viewMode === 'preview' ? "text-primary" : "text-muted-foreground")}/>
+            <div className="flex items-center justify-center space-x-2 mb-6 p-2 border rounded-lg bg-background shadow-sm">
+                <Button variant={viewMode === 'edit' ? 'secondary' : 'ghost'} onClick={() => setViewMode('edit')} className="flex-1">
+                    <Pencil className="mr-2 h-4 w-4" /> Edit
+                </Button>
+                <Button variant={viewMode === 'preview' ? 'secondary' : 'ghost'} onClick={() => setViewMode('preview')} className="flex-1">
+                    <BookOpen className="mr-2 h-4 w-4" /> Preview
+                </Button>
             </div>
         )}
 
@@ -266,26 +263,21 @@ function InvoiceEditorPageContent() {
         )}
         
         {isMobile && (
-            <div className="relative perspective-1000">
-                <div className={cn("transition-transform duration-700 ease-in-out w-full", "transform-style-3d", viewMode === 'preview' ? 'rotate-y-180' : 'rotate-y-0' )}>
-                    <div className="backface-hidden">
-                        {editorSide}
-                    </div>
-                    <div className="absolute top-0 left-0 w-full h-full backface-hidden rotate-y-180">
-                         {previewSide}
-                    </div>
+            <div className="relative overflow-hidden">
+                <div className={cn(
+                    "transition-transform duration-500 ease-in-out",
+                    viewMode === 'preview' ? '-translate-x-full' : 'translate-x-0'
+                )}>
+                    {editorSide}
+                </div>
+                <div className={cn(
+                    "absolute top-0 left-0 w-full transition-transform duration-500 ease-in-out",
+                    viewMode === 'preview' ? 'translate-x-0' : 'translate-x-full'
+                )}>
+                    {previewSide}
                 </div>
             </div>
         )}
-        
-         <style jsx global>{`
-          .transform-style-3d { transform-style: preserve-3d; }
-          .perspective-1000 { perspective: 1000px; }
-          .rotate-y-0 { transform: rotateY(0deg); }
-          .rotate-y-180 { transform: rotateY(180deg); }
-          .backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
-        `}</style>
-
       </div>
     </main>
   );
