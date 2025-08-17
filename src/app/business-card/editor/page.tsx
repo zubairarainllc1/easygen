@@ -197,7 +197,7 @@ function BusinessCardEditorContent() {
         )}
 
         {isMobile && (
-            <div className="relative overflow-hidden w-full">
+            <div className="relative overflow-hidden w-full h-fit">
                 <div className={cn(
                     "w-full transition-transform duration-500 ease-in-out",
                     viewMode === 'preview' ? '-translate-x-full' : 'translate-x-0'
