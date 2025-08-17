@@ -187,35 +187,37 @@ function InvoiceEditorPageContent() {
   const previewSide = (
       <div className={cn("lg:col-span-7 lg:sticky lg:top-24 h-fit", isMobile && "w-full")}>
           <Card className="shadow-lg">
-          <div ref={pdfRef} className="bg-card printable-content">
-              <InvoicePreview invoice={invoice} template={template} primaryColor={primaryColor} />
-          </div>
-          <div className="p-4 bg-muted/30 border-t flex flex-wrap justify-end gap-2">
-              <Button variant="outline" onClick={handlePreview}>
-                  <Eye />
-                  Full Screen
-              </Button>
-              <Button variant="outline" onClick={handleSendEmail}>
-                  <Mail />
-                  Send Email
-              </Button>
-              <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                      <Button>
-                          <Download />
-                          Download
-                      </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                      <DropdownMenuItem onSelect={() => handleDownload("pdf")}>
-                          <FileText className="mr-2"/> As PDF
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onSelect={() => handleDownload("png")}>
-                          <FileImage className="mr-2"/> As PNG
-                      </DropdownMenuItem>
-                  </DropdownMenuContent>
-              </DropdownMenu>
-          </div>
+            <div className="bg-card overflow-x-auto">
+                <div ref={pdfRef} className="printable-content min-w-[8.5in]">
+                    <InvoicePreview invoice={invoice} template={template} primaryColor={primaryColor} />
+                </div>
+            </div>
+            <div className="p-4 bg-muted/30 border-t flex flex-wrap justify-end gap-2">
+                <Button variant="outline" onClick={handlePreview}>
+                    <Eye />
+                    Full Screen
+                </Button>
+                <Button variant="outline" onClick={handleSendEmail}>
+                    <Mail />
+                    Send Email
+                </Button>
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button>
+                            <Download />
+                            Download
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        <DropdownMenuItem onSelect={() => handleDownload("pdf")}>
+                            <FileText className="mr-2"/> As PDF
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => handleDownload("png")}>
+                            <FileImage className="mr-2"/> As PNG
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
           </Card>
       </div>
   )
@@ -263,9 +265,9 @@ function InvoiceEditorPageContent() {
         )}
         
         {isMobile && (
-            <div className="relative overflow-hidden">
+            <div className="relative overflow-hidden w-full">
                 <div className={cn(
-                    "transition-transform duration-500 ease-in-out",
+                    "w-full transition-transform duration-500 ease-in-out",
                     viewMode === 'preview' ? '-translate-x-full' : 'translate-x-0'
                 )}>
                     {editorSide}

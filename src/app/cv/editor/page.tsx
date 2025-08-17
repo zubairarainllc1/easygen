@@ -179,8 +179,10 @@ function CvEditorPageContent() {
   const previewSide = (
       <div className={cn("lg:col-span-7 lg:sticky lg:top-24 h-fit", isMobile && "w-full")}>
           <Card className="shadow-lg">
-              <div ref={pdfRef} className="bg-card printable-content">
-              <CvPreview cvData={cvData} template={template} primaryColor={primaryColor} />
+              <div className="bg-card overflow-x-auto">
+                <div ref={pdfRef} className="printable-content min-w-[8.5in]">
+                    <CvPreview cvData={cvData} template={template} primaryColor={primaryColor} />
+                </div>
               </div>
               <div className="p-4 bg-muted/30 border-t flex flex-wrap justify-end gap-2">
               <DropdownMenu>
@@ -256,9 +258,9 @@ function CvEditorPageContent() {
         )}
         
         {isMobile && (
-            <div className="relative overflow-hidden">
+            <div className="relative overflow-hidden w-full">
                 <div className={cn(
-                    "transition-transform duration-500 ease-in-out",
+                    "w-full transition-transform duration-500 ease-in-out",
                     viewMode === 'preview' ? '-translate-x-full' : 'translate-x-0'
                 )}>
                     {editorSide}

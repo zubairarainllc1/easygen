@@ -134,7 +134,7 @@ function BusinessCardEditorContent() {
   const previewSide = (
       <div className={cn("space-y-4 lg:sticky lg:top-24 h-fit", isMobile && "w-full")}>
         <h2 className="text-xl font-semibold text-center">Preview</h2>
-        <div className="flex justify-center">
+        <div className="flex justify-center overflow-x-auto">
             <BusinessCardPreview cardData={cardData} frontRef={frontRef} backRef={backRef} isBack={isBack} template={template} />
         </div>
         <div className="p-4 bg-muted/30 border-t flex flex-wrap justify-center gap-2 rounded-b-lg">
@@ -197,9 +197,9 @@ function BusinessCardEditorContent() {
         )}
 
         {isMobile && (
-            <div className="relative overflow-hidden">
+            <div className="relative overflow-hidden w-full">
                 <div className={cn(
-                    "transition-transform duration-500 ease-in-out",
+                    "w-full transition-transform duration-500 ease-in-out",
                     viewMode === 'preview' ? '-translate-x-full' : 'translate-x-0'
                 )}>
                     {editorSide}
