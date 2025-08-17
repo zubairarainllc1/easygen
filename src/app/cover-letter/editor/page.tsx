@@ -60,11 +60,11 @@ function CoverLetterEditorPageContent() {
 
   const [coverLetterData, setCoverLetterData] = useState<CoverLetterData>({
     personalInfo: {
-      name: "John Doe",
-      email: "john.doe@example.com",
+      name: "Codexign",
+      email: "email@example.com",
       phone: "123-456-7890",
       address: "123 Main St, Anytown USA",
-      website: "johndoe.com",
+      website: "example.com",
       profileImage: withProfileImage ? "https://placehold.co/150x150.png" : "",
     },
     recipientInfo: {

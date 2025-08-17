@@ -401,7 +401,7 @@ export default function Home() {
       </main>
       <footer className="border-t">
         <div className="container py-8 flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-muted-foreground">Built by Codexign</p>
+            <p className="text-sm text-muted-foreground">&copy; 2025 <a href="https://www.codexign.site/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Codexign</a></p>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
                 <Link href="#" className="hover:text-primary transition-colors">Privacy Policy</Link>
                 <Link href="#" className="hover:text-primary transition-colors">Terms of Service</Link>
@@ -435,5 +435,3 @@ const ListItem = React.forwardRef<
   )
 })
 ListItem.displayName = "ListItem"
-
-    

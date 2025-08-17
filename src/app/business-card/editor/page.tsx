@@ -32,10 +32,10 @@ function BusinessCardEditorContent() {
   const [withLogo, setWithLogo] = useState(true);
 
   const [cardData, setCardData] = useState<BusinessCardData>({
-    name: "John Doe",
+    name: "Codexign",
     title: "CEO & Founder",
     companyName: "Creative Solutions",
-    email: "john.doe@creativesolutions.com",
+    email: "info@creativesolutions.com",
     phone: "+1 234 567 890",
     website: "www.creativesolutions.com",
     address: "123 Design Lane, Art City, 54321",
