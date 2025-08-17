@@ -21,6 +21,8 @@ import {
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ChevronDown } from "lucide-react";
 
 
 const tools = [
@@ -156,7 +158,7 @@ const howToSteps = [
     },
     {
         title: "How to use QR Code Generator",
-        description: "Instantly create custom QR codes for websites, text, contact information, and more. Our generator is simple to use and allows you to customize the size and color to fit your needs. QR codes are perfect for marketing materials, event flyers, or business cards, providing a quick and easy way for people to access your information. Download your high-quality QR code in seconds.",
+        description: "Instantly create custom QR codes for websites, text, contact information, and more. Our generator is simple to use and allows you to customize the size and color to fit your needs. QR codes are perfect for marketing materials, event flyers, or business cards, providing a quick and easy way for people to access your information. Download your high-resolution QR code in seconds.",
         steps: [
             "Enter the URL or text you want the QR code to link to.",
             "Customize the size of the QR code using the slider.",
@@ -250,6 +252,16 @@ export default function Home() {
         }
     }, [filter]);
 
+    const handleScrollTo = (id: string) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    };
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -302,16 +314,23 @@ export default function Home() {
                    <SheetHeader>
                     <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                   </SheetHeader>
-                  <div className="flex flex-col gap-4 p-4">
-                     <Link href="/" className="font-semibold hover:text-primary transition-colors">Home</Link>
-                     <Link href="/blog" className="font-semibold hover:text-primary transition-colors">Blog</Link>
-                     <Link href="/#how-to" className="font-semibold hover:text-primary transition-colors">How To</Link>
-                      <p className="font-semibold mt-4">Tools</p>
-                      <div className="pl-4 flex flex-col gap-2">
-                        {tools.map((tool) => (
-                           <Link key={tool.href} href={tool.href} className="text-muted-foreground hover:text-primary transition-colors">{tool.title}</Link>
-                        ))}
-                      </div>
+                  <div className="flex flex-col gap-2 p-4">
+                     <Link href="/" className="font-semibold text-lg hover:text-primary transition-colors py-2">Home</Link>
+                     <Link href="/blog" className="font-semibold text-lg hover:text-primary transition-colors py-2">Blog</Link>
+                     <Link href="/#how-to" className="font-semibold text-lg hover:text-primary transition-colors py-2">How To</Link>
+                      <Collapsible>
+                        <CollapsibleTrigger className="flex items-center justify-between w-full font-semibold text-lg hover:text-primary transition-colors py-2 group">
+                            Tools
+                            <ChevronDown className="h-5 w-5 transition-transform duration-300 group-data-[state=open]:rotate-180" />
+                        </CollapsibleTrigger>
+                        <CollapsibleContent>
+                            <div className="pl-4 flex flex-col gap-2 pt-2">
+                                {tools.map((tool) => (
+                                <Link key={tool.href} href={tool.href} className="text-muted-foreground hover:text-primary transition-colors py-1">{tool.title}</Link>
+                                ))}
+                            </div>
+                        </CollapsibleContent>
+                      </Collapsible>
                   </div>
                 </SheetContent>
               </Sheet>
@@ -331,17 +350,15 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="space-y-4 pt-4">
-                    <Link href="#tools">
-                       <Button size="lg">
+                    <Button size="lg" onClick={() => handleScrollTo('tools')}>
                         Explore Tools
-                       </Button>
-                    </Link>
+                    </Button>
                 </div>
             </div>
           </div>
         </section>
         
-        <section id="tools" className="w-full py-12 md:py-24 lg:py-32 bg-muted/50">
+        <section id="tools" className="w-full py-12 md:py-24 lg:py-32 bg-muted/50 scroll-mt-16">
           <div className="container mx-auto px-4 md:px-6">
             <div className="flex flex-col items-center text-center space-y-4 mb-12">
                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl font-sans">Our Tools</h2>
@@ -383,7 +400,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="how-to" className="w-full py-12 md:py-24 lg:py-32">
+        <section id="how-to" className="w-full py-12 md:py-24 lg:py-32 scroll-mt-16">
             <div className="container mx-auto px-4 md:px-6">
                 <div className="flex flex-col items-center text-center space-y-4 mb-12">
                     <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl font-sans">How It Works</h2>
